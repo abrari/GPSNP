@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="snpsvm">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/snpsvm_lib.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../SNPSVM-master/src" />
+    </SOURCES>
+  </library>
+</component>
