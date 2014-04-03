@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="samtools">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/samtools.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../samsdk" />
+    </SOURCES>
+  </library>
+</component>
