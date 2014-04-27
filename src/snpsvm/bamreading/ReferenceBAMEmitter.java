@@ -48,7 +48,7 @@ public class ReferenceBAMEmitter {
 	/**
 	 * If non-null, positions of each site will be emitted to this file, which helps to resolve 
 	 * where variant calls are. 
-	 * @param file
+	 * @param
 	 * @throws IOException 
 	 */
 	public void setPositionsWriter(BufferedWriter writer) throws IOException {
@@ -69,21 +69,17 @@ public class ReferenceBAMEmitter {
                return;
             }
 
-			//System.out.println(alnCol.getCurrentPosition() + "\t" + refBase + " : " + alnCol.getBasesAsString());
-			out.print("-1"); //libsvm requires some label here but doesn't use it
-			int index = 1;
+            out.print(alnCol.getCurrentPosition() + "\t" + refBase + "\t" + alnCol.getBasesAsString());
+
+            int index = 1;
 			for(FeatureComputer counter : counters) {
 				final double[] values = counter.computeValue(refBase, refReader, alnCol);
 				for(int i=0; i<values.length; i++) {
-					if (values[i] < -1.0 || values[i] > 1.0) {
-						//final double x = values[i];
-						throw new IllegalArgumentException("Invalid value for counter: " + counter.getName() + " found value=" + values[i] + " chr: " + alnCol.getCurrentContig() + " pos:" + alnCol.getCurrentPosition());
-					}
 					if (Double.isInfinite(values[i]) || Double.isNaN(values[i])) {
 						throw new IllegalArgumentException("Non-regular value for counter: " + counter.getName() + " found value=" + values[i]);
 					}
 
-					out.print("\t" + index + ":" + formatter.format(values[i]) );
+					out.print("\t" + formatter.format(values[i]) );
 					index++;
 				}
 			}
