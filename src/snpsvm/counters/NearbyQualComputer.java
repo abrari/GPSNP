@@ -3,11 +3,11 @@ package snpsvm.counters;
 import java.util.Iterator;
 
 import snpsvm.bamreading.AlignmentColumn;
-import snpsvm.bamreading.ColumnComputer;
+import snpsvm.bamreading.FeatureComputer;
 import snpsvm.bamreading.FastaWindow;
 import snpsvm.bamreading.MappedRead;
 
-public class NearbyQualComputer implements ColumnComputer {
+public class NearbyQualComputer implements FeatureComputer {
 
 	public final int WINDOW_SIZE = 3; //Window spans the focus position, so 7 means three in either direction
 	double[] values = new double[WINDOW_SIZE];

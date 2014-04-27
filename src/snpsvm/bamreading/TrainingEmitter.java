@@ -27,7 +27,7 @@ public class TrainingEmitter extends ReferenceBAMEmitter {
 			File knownFalseSites,
 			File reference, 
 			File bamFile,
-			List<ColumnComputer> counters) throws IOException, IndexNotFoundException {
+			List<FeatureComputer> counters) throws IOException, IndexNotFoundException {
 		super(reference, bamFile, counters, new CallingOptions()); 
 		
 		this.knownTrueSites = new VariantPositionList(knownVarSites);
@@ -69,7 +69,7 @@ public class TrainingEmitter extends ReferenceBAMEmitter {
 
 				out.print(prefix);
 				//out.print(alnCol.getCurrentPosition() + "\t" + refReader.getCurrentBase() + " : " + alnCol.getBasesAsString());
-				for(ColumnComputer counter : counters) {
+				for(FeatureComputer counter : counters) {
 					double[] values = counter.computeValue(refBase, refReader, alnCol);
 					for(int i=0; i<values.length; i++) {
 						if (values[i] < -1 || values[i] > 1) {

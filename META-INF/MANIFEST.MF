@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Class-Path: samtools.jar
+Main-Class: gpsnp.app.FeatureComputation
+

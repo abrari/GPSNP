@@ -9,10 +9,10 @@ import java.util.List;
 import libsvm.LIBSVMModel;
 import libsvm.LIBSVMTrain;
 import snpsvm.bamreading.FastaIndex.IndexNotFoundException;
+import snpsvm.bamreading.FeatureComputer;
 import snpsvm.bamreading.TrainingEmitter;
 import snpsvm.bamreading.intervalProcessing.IntervalList;
 import snpsvm.bamreading.intervalProcessing.IntervalList.Interval;
-import snpsvm.bamreading.ColumnComputer;
 import snpsvm.counters.CounterSource;
 
 /**
@@ -136,7 +136,7 @@ public class ModelBuilder extends AbstractModule {
 			File extantData,
 			IntervalList intervals) throws IOException, IndexNotFoundException {
 		
-		List<ColumnComputer> counters = CounterSource.getCounters();
+		List<FeatureComputer> counters = CounterSource.getCounters();
 		
 		TrainingEmitter emitter = new TrainingEmitter(trueTraining, falseTraining, ref, knownBAM, counters);
 		

@@ -1,10 +1,10 @@
 package snpsvm.counters;
 
 import snpsvm.bamreading.AlignmentColumn;
-import snpsvm.bamreading.ColumnComputer;
+import snpsvm.bamreading.FeatureComputer;
 import snpsvm.bamreading.FastaWindow;
 
-public class DinucRepeatCounter implements ColumnComputer {
+public class DinucRepeatCounter implements FeatureComputer {
 
 	final double[] values = new double[2];
 	

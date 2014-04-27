@@ -18,12 +18,12 @@ import snpsvm.bamreading.BAMWindowStore;
 import snpsvm.bamreading.CallingOptions;
 import snpsvm.bamreading.FastaIndex.IndexNotFoundException;
 import snpsvm.bamreading.FastaReader2;
+import snpsvm.bamreading.FeatureComputer;
 import snpsvm.bamreading.intervalProcessing.IntervalList;
 import snpsvm.bamreading.intervalProcessing.IntervalList.Interval;
 import snpsvm.bamreading.snpCalling.IntervalSNPCaller;
 import snpsvm.bamreading.variant.VCFVariantEmitter;
 import snpsvm.bamreading.variant.Variant;
-import snpsvm.bamreading.ColumnComputer;
 import snpsvm.counters.CounterSource;
 
 /**
@@ -42,7 +42,7 @@ public class Predictor extends AbstractModule {
 	
 	public void emitColumnNames() {
 		int index = 1;
-		for(ColumnComputer counter : CounterSource.getCounters()) {
+		for(FeatureComputer counter : CounterSource.getCounters()) {
 			for(int i=0; i<counter.getColumnCount(); i++) {
 				System.out.println(index + "\t" + counter.getColumnDesc(i));
 				index++;

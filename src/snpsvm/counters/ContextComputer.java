@@ -1,10 +1,10 @@
 package snpsvm.counters;
 
 import snpsvm.bamreading.AlignmentColumn;
-import snpsvm.bamreading.ColumnComputer;
+import snpsvm.bamreading.FeatureComputer;
 import snpsvm.bamreading.FastaWindow;
 
-public class ContextComputer implements ColumnComputer {
+public class ContextComputer implements FeatureComputer {
 
 	final int RANGE = 5; //number of bases in either direction to record
 	private final double[] values = new double[4*(2*RANGE+1)];

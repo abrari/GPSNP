@@ -6,14 +6,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
-import snpsvm.bamreading.BamWindow;
-import snpsvm.bamreading.CallingOptions;
+import snpsvm.bamreading.*;
 import snpsvm.bamreading.FastaIndex.IndexNotFoundException;
-import snpsvm.bamreading.FastaReader2;
-import snpsvm.bamreading.ReferenceBAMEmitter;
 import snpsvm.bamreading.intervalProcessing.IntervalList;
 import snpsvm.bamreading.intervalProcessing.IntervalList.Interval;
-import snpsvm.bamreading.ColumnComputer;
+import snpsvm.bamreading.FeatureComputer;
 import snpsvm.counters.CounterSource;
 
 public class Emitter extends AbstractModule {
@@ -47,7 +44,7 @@ public class Emitter extends AbstractModule {
 
 		File referenceFile = new File(referencePath);
 		File inputBAM = new File(inputBAMPath);
-		List<ColumnComputer> counters = CounterSource.getCounters();
+		List<FeatureComputer> counters = CounterSource.getCounters();
 		BamWindow window = new BamWindow(inputBAM);
 		CallingOptions ops = new CallingOptions();
 

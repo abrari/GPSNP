@@ -3,11 +3,11 @@ package snpsvm.counters;
 import java.util.Iterator;
 
 import snpsvm.bamreading.AlignmentColumn;
-import snpsvm.bamreading.ColumnComputer;
+import snpsvm.bamreading.FeatureComputer;
 import snpsvm.bamreading.FastaWindow;
 import snpsvm.bamreading.MappedRead;
 
-public class TsTvComputer implements ColumnComputer {
+public class TsTvComputer implements FeatureComputer {
 
 	final int[] counts = new int[4]; //Stores counts of each observed base
 	final double[] values = new double[1]; //Return value

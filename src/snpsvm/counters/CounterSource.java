@@ -1,6 +1,6 @@
 package snpsvm.counters;
 
-import snpsvm.bamreading.ColumnComputer;
+import snpsvm.bamreading.FeatureComputer;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,8 +25,8 @@ public class CounterSource {
 	 *  
 	 * @return
 	 */
-	public static List<ColumnComputer> getCounters() {
-		List<ColumnComputer> counters = new ArrayList<ColumnComputer>();
+	public static List<FeatureComputer> getCounters() {
+		List<FeatureComputer> counters = new ArrayList<FeatureComputer>();
 		counters.add( new DuplicateCounter()); 
 		/* 0 */ counters.add( new DepthComputer());  // col 1
 		/* 1 */ counters.add( new BinomProbComputer()); // 2
@@ -51,7 +51,7 @@ public class CounterSource {
 			//Sort descending
 			Collections.sort(exclusions, Collections.reverseOrder());
 			for(int which : exclusions) {
-				ColumnComputer removed = counters.remove(which);
+				FeatureComputer removed = counters.remove(which);
 				System.err.println("Removing counter " + removed.getName());
 			}
 		}

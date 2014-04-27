@@ -1,7 +1,7 @@
 package snpsvm.counters;
 
 import snpsvm.bamreading.AlignmentColumn;
-import snpsvm.bamreading.ColumnComputer;
+import snpsvm.bamreading.FeatureComputer;
 import snpsvm.bamreading.FastaWindow;
 
 /**
@@ -12,7 +12,7 @@ import snpsvm.bamreading.FastaWindow;
  * @author brendan
  *
  */
-public class NucDiversityCounter implements ColumnComputer {
+public class NucDiversityCounter implements FeatureComputer {
 
 	public final double expA = 0.3;
 	public final double expC = 0.2;

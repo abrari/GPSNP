@@ -1,7 +1,7 @@
 package snpsvm.counters;
 
 import snpsvm.bamreading.AlignmentColumn;
-import snpsvm.bamreading.ColumnComputer;
+import snpsvm.bamreading.FeatureComputer;
 import snpsvm.bamreading.FastaWindow;
 
 /**
@@ -9,7 +9,7 @@ import snpsvm.bamreading.FastaWindow;
  * @author brendan
  *
  */
-public class DepthComputer implements ColumnComputer {
+public class DepthComputer implements FeatureComputer {
 
 	private final double[] value = new double[1];
 	

@@ -3,7 +3,7 @@ package snpsvm.counters;
 import java.util.Iterator;
 
 import snpsvm.bamreading.AlignmentColumn;
-import snpsvm.bamreading.ColumnComputer;
+import snpsvm.bamreading.FeatureComputer;
 import snpsvm.bamreading.FastaWindow;
 import snpsvm.bamreading.MappedRead;
 
@@ -12,7 +12,7 @@ import snpsvm.bamreading.MappedRead;
  * @author brendan
  *
  */
-public class OverlappingIndelComputer implements ColumnComputer {
+public class OverlappingIndelComputer implements FeatureComputer {
 
 	double[] value = new double[1];
 	

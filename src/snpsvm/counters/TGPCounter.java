@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import snpsvm.bamreading.AlignmentColumn;
-import snpsvm.bamreading.ColumnComputer;
+import snpsvm.bamreading.FeatureComputer;
 import snpsvm.bamreading.FastaWindow;
 
 /**
@@ -16,7 +16,7 @@ import snpsvm.bamreading.FastaWindow;
  * @author brendan
  *
  */
-public class TGPCounter implements ColumnComputer {
+public class TGPCounter implements FeatureComputer {
 
 	final double[] value = new double[1];
 	

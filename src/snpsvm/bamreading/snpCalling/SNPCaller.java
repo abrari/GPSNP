@@ -11,17 +11,13 @@ import java.util.List;
 import libsvm.LIBSVMModel;
 import libsvm.LIBSVMPredictor;
 import libsvm.LIBSVMResult;
-import snpsvm.bamreading.BAMWindowStore;
-import snpsvm.bamreading.BamWindow;
-import snpsvm.bamreading.CallingOptions;
-import snpsvm.bamreading.ReferenceBAMEmitter;
-import snpsvm.bamreading.ResultVariantConverter;
+import snpsvm.bamreading.*;
 import snpsvm.bamreading.FastaIndex.IndexNotFoundException;
 import snpsvm.bamreading.intervalProcessing.IntervalCaller;
 import snpsvm.bamreading.intervalProcessing.IntervalList;
 import snpsvm.bamreading.intervalProcessing.IntervalList.Interval;
 import snpsvm.bamreading.variant.Variant;
-import snpsvm.bamreading.ColumnComputer;
+import snpsvm.bamreading.FeatureComputer;
 
 /**
  * Reads and emits information from an input BAMWindow, then uses a model to call
@@ -37,7 +33,7 @@ public class SNPCaller implements IntervalCaller<List<Variant>> {
 	protected final File referenceFile;
 	protected final File modelFile;
 	protected final IntervalList intervals;
-	protected List<ColumnComputer> counters;
+	protected List<FeatureComputer> counters;
 	protected List<Variant> variants = null;
 	protected BAMWindowStore bamWindows;
 	protected CallingOptions options = null;
@@ -48,7 +44,7 @@ public class SNPCaller implements IntervalCaller<List<Variant>> {
 	public SNPCaller(File referenceFile, 
 			File modelFile, 
 			IntervalList intervals, 
-			List<ColumnComputer> counters, 
+			List<FeatureComputer> counters,
 			BAMWindowStore bamWindows,
 			CallingOptions options) {
 		this.referenceFile = referenceFile;

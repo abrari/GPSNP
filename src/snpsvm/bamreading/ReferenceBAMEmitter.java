@@ -17,14 +17,14 @@ public class ReferenceBAMEmitter {
 	final FastaWindow refReader;
 	protected AlignmentColumn alnCol;
 	private Map<String, Integer> contigMap;
-	List<ColumnComputer> counters;
+	List<FeatureComputer> counters;
 	protected BufferedWriter positionWriter = null;
 	protected DecimalFormat formatter = new DecimalFormat("0.0####");
 	protected final int minDepth;
 	protected final int minVarDepth;
 	
 	
-	public ReferenceBAMEmitter(File reference, List<ColumnComputer> counters, BamWindow window, CallingOptions ops) throws IOException, IndexNotFoundException {
+	public ReferenceBAMEmitter(File reference, List<FeatureComputer> counters, BamWindow window, CallingOptions ops) throws IOException, IndexNotFoundException {
 		refReader = new FastaWindow(reference);
 		contigMap = new HashMap<String, Integer>();
 		for(String contig : refReader.getContigs()) {
@@ -36,7 +36,7 @@ public class ReferenceBAMEmitter {
 		this.counters = counters;
 	}
 	
-	public ReferenceBAMEmitter(File reference, File bamFile, List<ColumnComputer> counters, CallingOptions ops) throws IOException, IndexNotFoundException {
+	public ReferenceBAMEmitter(File reference, File bamFile, List<FeatureComputer> counters, CallingOptions ops) throws IOException, IndexNotFoundException {
 		refReader = new FastaWindow(reference);
 		//contigMap = refReader.getContigSizes();
 		alnCol = new AlignmentColumn(bamFile);
@@ -72,7 +72,7 @@ public class ReferenceBAMEmitter {
 			//System.out.println(alnCol.getCurrentPosition() + "\t" + refBase + " : " + alnCol.getBasesAsString());
 			out.print("-1"); //libsvm requires some label here but doesn't use it
 			int index = 1;
-			for(ColumnComputer counter : counters) {
+			for(FeatureComputer counter : counters) {
 				final double[] values = counter.computeValue(refBase, refReader, alnCol);
 				for(int i=0; i<values.length; i++) {
 					if (values[i] < -1.0 || values[i] > 1.0) {

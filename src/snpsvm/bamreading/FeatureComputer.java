@@ -3,7 +3,7 @@ package snpsvm.bamreading;
 import snpsvm.bamreading.AlignmentColumn;
 import snpsvm.bamreading.FastaWindow;
 
-public interface ColumnComputer {
+public interface FeatureComputer {
 
 	/**
 	 * A user-friendly name for this computer
