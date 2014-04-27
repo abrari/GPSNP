@@ -1,5 +1,6 @@
 import snpsvm.bamreading.FastaIndex;
 import snpsvm.bamreading.FastaReader2;
+import snpsvm.bamreading.FastaWindow;
 
 import java.io.File;
 import java.util.Collection;
@@ -16,6 +17,7 @@ public class FastaTest {
 
         File fastaFile = new File("/home/abrari/Tesis/sam/lambda_virus.fa");
 
+/*
         try {
             FastaReader2 fastaReader = new FastaReader2(fastaFile);
 
@@ -38,6 +40,23 @@ public class FastaTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
+*/
+
+        try {
+            FastaWindow window = new FastaWindow(fastaFile);
+
+            for (String contig : window.getContigs()) {
+                //System.out.println(contig);
+
+                // this will only read as long as FastaWindow::windowSize
+                window.resetTo(contig, 1);
+                System.out.println(window.allToString());
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
     }
 
