@@ -17,7 +17,7 @@ public class MQComputer extends VarCountComputer {
 	final double[] counts = new double[2];
 	
 	@Override
-	public String getName() {
+	public String getName(int which) {
 		return "mapping.quality";
 	}
 

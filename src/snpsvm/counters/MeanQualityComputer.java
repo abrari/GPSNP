@@ -9,7 +9,7 @@ import snpsvm.bamreading.MappedRead;
 public class MeanQualityComputer extends VarCountComputer {
 
 	@Override
-	public String getName() {
+	public String getName(int which) {
 		return "mean.quality";
 	}
 	

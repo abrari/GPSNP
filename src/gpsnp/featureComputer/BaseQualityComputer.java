@@ -18,8 +18,8 @@ public class BaseQualityComputer implements FeatureComputer {
     final double[] values = new double[1];
 
     @Override
-    public String getName() {
-        return "base.qual";
+    public String getName(int which) {
+        return "mean.base.qual";
     }
 
     @Override

@@ -63,7 +63,7 @@ public class TGPCounter implements FeatureComputer {
 	}
 	
 	@Override
-	public String getName() {
+	public String getName(int which) {
 		return "1000G.freq";
 	}
 

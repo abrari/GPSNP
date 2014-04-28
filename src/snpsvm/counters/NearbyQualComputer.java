@@ -15,7 +15,7 @@ public class NearbyQualComputer implements FeatureComputer {
 	public final double defaultVal = 20;
 	
 	@Override
-	public String getName() {
+	public String getName(int which) {
 		return "nearby.qualities";
 	}
 

@@ -25,7 +25,7 @@ public class NucDiversityCounter implements FeatureComputer {
 	public final int WINDOW_SIZE = 10; //Window in either direction, total size will be 2*W+1
 	
 	@Override
-	public String getName() {
+	public String getName(int which) {
 		return "nuc.diversity";
 	}
 

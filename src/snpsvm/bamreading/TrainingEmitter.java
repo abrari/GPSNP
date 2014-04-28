@@ -73,10 +73,10 @@ public class TrainingEmitter extends ReferenceBAMEmitter {
 					double[] values = counter.computeValue(refBase, refReader, alnCol);
 					for(int i=0; i<values.length; i++) {
 						if (values[i] < -1 || values[i] > 1) {
-							throw new IllegalArgumentException("Invalid value for counter: " + counter.getName() + " found value=" + values[i]);
+							throw new IllegalArgumentException("Invalid value for counter: " + counter.getName(i) + " found value=" + values[i]);
 						}
 						if (Double.isInfinite(values[i]) || Double.isNaN(values[i])) {
-							throw new IllegalArgumentException("Invalid value for counter: " + counter.getName() + " found value=" + values[i]);
+							throw new IllegalArgumentException("Invalid value for counter: " + counter.getName(i) + " found value=" + values[i]);
 						}
 						if (values[i] != 0)
 							out.print("\t" + index + ":" + formatter.format(values[i]) );

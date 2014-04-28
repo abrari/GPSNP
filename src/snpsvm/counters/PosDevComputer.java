@@ -19,7 +19,7 @@ public class PosDevComputer extends VarCountComputer {
 	private final double[] K = new double[2];	
 	
 	@Override
-	public String getName() {
+	public String getName(int which) {
 		return "pos.dev";
 	}
 

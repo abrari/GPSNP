@@ -19,7 +19,7 @@ import snpsvm.bamreading.MappedRead;
 public class DuplicateCounter extends VarCountComputer {
 	
 	@Override
-	public String getName() {
+	public String getName(int which) {
 		return "dup.counter";
 	}
 

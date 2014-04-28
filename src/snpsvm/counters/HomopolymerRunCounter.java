@@ -16,7 +16,7 @@ public class HomopolymerRunCounter implements FeatureComputer {
 	final int maxLength = 10; //dont look beyond this many bases in either direction
 	
 	@Override
-	public String getName() {
+	public String getName(int which) {
 		return "hrun.counter";
 	}
 

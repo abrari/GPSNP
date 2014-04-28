@@ -9,7 +9,7 @@ public class ContextComputer implements FeatureComputer {
 	final int RANGE = 5; //number of bases in either direction to record
 	private final double[] values = new double[4*(2*RANGE+1)];
 	@Override
-	public String getName() {
+	public String getName(int which) {
 		return "nuc.context.computer";
 	}
 	

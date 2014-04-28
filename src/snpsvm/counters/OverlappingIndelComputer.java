@@ -44,7 +44,7 @@ public class OverlappingIndelComputer implements FeatureComputer {
 	
 
 	@Override
-	public String getName() {
+	public String getName(int which) {
 		return "var.frac";
 	}
 

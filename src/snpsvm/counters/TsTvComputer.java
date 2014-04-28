@@ -20,8 +20,8 @@ public class TsTvComputer implements FeatureComputer {
 	final double[] values = new double[1]; //Return value
 	
 	@Override
-	public String getName() {
-		return "ts/tv";
+	public String getName(int which) {
+		return "ts.tv";
 	}
 
 	@Override

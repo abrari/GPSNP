@@ -40,7 +40,7 @@ public class FeatureComputation {
         System.out.print("Pos\tRef\tAlt");
         for(FeatureComputer feature : features) {
             for(int i=0; i<feature.getColumnCount(); i++) {
-                System.out.print("\t" + feature.getName());
+                System.out.print("\t" + feature.getName(i));
             }
         }
         System.out.println();
@@ -48,7 +48,7 @@ public class FeatureComputation {
         ReferenceBAMEmitter emitter = new ReferenceBAMEmitter(reference, features, window, new CallingOptions());
         for(String contig : intervals.getContigs()) {
             for(IntervalList.Interval inter : intervals.getIntervalsInContig(contig)) {
-                emitter.emitWindow(contig, inter.getFirstPos(), inter.getLastPos(), System.out);
+                emitter.emitWindow(contig, inter.getFirstPos(), 900, System.out);
             }
         }
 

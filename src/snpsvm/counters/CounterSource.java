@@ -52,7 +52,7 @@ public class CounterSource {
 			Collections.sort(exclusions, Collections.reverseOrder());
 			for(int which : exclusions) {
 				FeatureComputer removed = counters.remove(which);
-				System.err.println("Removing counter " + removed.getName());
+				System.err.println("Removing counter " + removed.getName(0));
 			}
 		}
 		return counters;

@@ -17,7 +17,7 @@ public class MismatchTotal implements FeatureComputer {
 	private final double[] value = new double[1];
 	
 	@Override
-	public String getName() {
+	public String getName(int which) {
 		return "mismatches.per.read";
 	}
 	

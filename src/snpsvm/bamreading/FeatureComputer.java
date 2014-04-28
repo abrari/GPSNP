@@ -9,8 +9,8 @@ public interface FeatureComputer {
 	 * A user-friendly name for this computer
 	 * @return
 	 */
-	public String getName();
-	
+	public String getName(int which);
+
 	/**
 	 * The number of statistics or 'columns' produced by this computer
 	 * @return

@@ -11,7 +11,7 @@ public class QualSumComputer extends VarCountComputer {
 	final double maxScore = 500.0; //Maximum value for any base
 	
 	@Override
-	public String getName() {
+	public String getName(int which) {
 		return "quality.sums";
 	}
 	

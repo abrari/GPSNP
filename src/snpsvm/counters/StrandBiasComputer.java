@@ -14,7 +14,7 @@ public class StrandBiasComputer implements FeatureComputer {
 	final double[] reverse = new double[2];
 	
 	@Override
-	public String getName() {
+	public String getName(int which) {
 		return "strand.bias";
 	}
 

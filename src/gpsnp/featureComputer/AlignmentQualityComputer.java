@@ -18,8 +18,8 @@ public class AlignmentQualityComputer implements FeatureComputer {
     final double[] values = new double[1];
 
     @Override
-    public String getName() {
-        return "mapping.qual";
+    public String getName(int which) {
+        return "mean.mapping.qual";
     }
 
     @Override
