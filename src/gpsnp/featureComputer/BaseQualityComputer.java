@@ -46,17 +46,14 @@ public class BaseQualityComputer implements FeatureComputer {
                     if (read.getBaseAtReferencePos(col.getCurrentPosition()) == 'N')
                         continue;
 
-                    // System.err.print(read.getQualityAtReferencePos(col.getCurrentPosition()) + " ");
-
                     values[0] += read.getQualityAtReferencePos(col.getCurrentPosition());
                     count++;
                 }
             }
         }
 
-        // System.err.println();
-
-        values[0] = values[0] / (double)count;
+        if (count > 0)
+            values[0] = values[0] / (double)count;
 
         return values;
     }

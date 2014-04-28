@@ -1,8 +1,6 @@
 package gpsnp.app;
 
-import gpsnp.featureComputer.AlignmentQualityComputer;
-import gpsnp.featureComputer.BaseQualityComputer;
-import gpsnp.featureComputer.MaxQualAlleleComputer;
+import gpsnp.featureComputer.*;
 import snpsvm.bamreading.FeatureComputer;
 import snpsvm.counters.DepthComputer;
 import snpsvm.counters.TsTvComputer;
@@ -24,6 +22,8 @@ public class FeatureList {
         computers.add(new AlignmentQualityComputer());
         computers.add(new BaseQualityComputer());
         computers.add(new MaxQualAlleleComputer());
+        computers.add(new MeanQualAlleleComputer());
+        computers.add(new FreqAlleleComputer());
 
         return computers;
     }

@@ -47,17 +47,14 @@ public class AlignmentQualityComputer implements FeatureComputer {
                     if (read.getBaseAtReferencePos(col.getCurrentPosition()) == 'N')
                         continue;
 
-                    // System.err.print(read.getRecord().getMappingQuality() + " ");
-
                     values[0] += read.getRecord().getMappingQuality();
                     count++;
                 }
             }
         }
 
-        // System.err.println();
-
-        values[0] = values[0] / (double)count;
+        if (count > 0)
+            values[0] = values[0] / (double)count;
 
         return values;
     }
