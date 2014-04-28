@@ -7,6 +7,13 @@ import snpsvm.bamreading.FeatureComputer;
 import snpsvm.bamreading.FastaWindow;
 import snpsvm.bamreading.MappedRead;
 
+/*
+ * Transition/transversion
+ *
+ * Transition = 0
+ * Transversion = 1
+ */
+
 public class TsTvComputer implements FeatureComputer {
 
 	final int[] counts = new int[4]; //Stores counts of each observed base
@@ -14,7 +21,7 @@ public class TsTvComputer implements FeatureComputer {
 	
 	@Override
 	public String getName() {
-		return "TsTV.counter";
+		return "ts/tv";
 	}
 
 	@Override
@@ -24,7 +31,7 @@ public class TsTvComputer implements FeatureComputer {
 
 	@Override
 	public String getColumnDesc(int which) {
-		return "-1 if Ts, +1 if Tv";
+		return "Mutation type, 0 if Ts, 1 if Tv";
 	}
 
 	@Override
@@ -69,10 +76,10 @@ public class TsTvComputer implements FeatureComputer {
 				|| (refBase == 'G' && alt=='A')
 				|| (refBase == 'C' && alt=='T')
 				|| (refBase == 'T' && alt=='C')) {
-				val = 1.0;
+				val = 0; // Transition
 			}
 			else {
-				val = -1.0;
+				val = 1; // Transversion
 			}
 			
 			
