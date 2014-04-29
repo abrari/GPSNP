@@ -24,6 +24,7 @@ public class FeatureList {
         computers.add(new MaxQualAlleleComputer());
         computers.add(new MeanQualAlleleComputer());
         computers.add(new FreqAlleleComputer());
+        computers.add(new RelativeDistanceComputer());
 
         return computers;
     }
