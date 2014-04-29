@@ -58,15 +58,12 @@ public class StrandBiasComputer implements FeatureComputer {
 				}
 			}
 		}
-		
+
+        // Pearson's chi square test
 		
 		value[0] = (forward[1]/reverse[1] - 0.5)*(forward[1]/reverse[1] - 0.5) / 0.5;
 		value[0] += (forward[0]/reverse[0] - 0.5)*(forward[0]/reverse[0] - 0.5) / 0.5;
 		
-		if (value[0] > 100.0)
-			value[0] = 100.0;
-		
-		value[0] = value[0] / 100.0 * 2.0 - 1.0;
 		return value;
 	}
 

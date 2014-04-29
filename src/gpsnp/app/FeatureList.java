@@ -1,6 +1,5 @@
 package gpsnp.app;
 
-import gpsnp.featureComputer.*;
 import snpsvm.bamreading.FeatureComputer;
 import snpsvm.counters.*;
 
@@ -16,10 +15,12 @@ public class FeatureList {
 
     public static List<FeatureComputer> getFeatures() {
         List<FeatureComputer> computers = new ArrayList<FeatureComputer>();
-        computers.add(new ErrorProbComputer());
-        computers.add(new DinucRepeatCounter());
-        computers.add(new PosDevComputer());
-        computers.add(new ReadPosCounter());
+        computers.add(new StrandBiasComputer());
+        computers.add(new AreaMismatchComputer());
+        computers.add(new HomopolymerRunComputer());
+        computers.add(new NucDiversityComputer());
+        computers.add(new MismatchComputer());
+        computers.add(new AlleleBalanceComputer());
 
         return computers;
     }

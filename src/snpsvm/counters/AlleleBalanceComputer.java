@@ -12,46 +12,41 @@ import snpsvm.bamreading.MappedRead;
  * @author brendan
  *
  */
-public class VarFracCounter implements FeatureComputer {
+public class AlleleBalanceComputer implements FeatureComputer {
 	
 	double[] value = new double[1];
 	
 	@Override
 	public double[] computeValue(final char refBase, FastaWindow window, AlignmentColumn col) {
-		double refCount = 0;
-		double altCount = 0;
+		double count = 0;
+		double varCount = 0;
 		if (col.getDepth() > 0) {
 			Iterator<MappedRead> it = col.getIterator();
 			while(it.hasNext()) {
 				MappedRead read = it.next();
 				if (read.hasBaseAtReferencePos(col.getCurrentPosition())) {
 					byte b = read.getBaseAtReferencePos(col.getCurrentPosition());
-					byte q = read.getQualityAtReferencePos(col.getCurrentPosition());
-					if (b == 'N' || q < 10.0) 
+					if (b == 'N')
 						continue;
-					if (b == refBase)
-						refCount++;
-					else
-						altCount++;
+
+					if (b != refBase)
+						varCount++;
+
+					count++;
 				}
 			}
 		}
 		
-		
-		
-		double result = 0.0;
-		if ( (refCount + altCount) > 0.0)
-			result = altCount / (refCount + altCount);
-		
-		value[0] = result;
-		value[0] = value[0]*2.0 - 1.0; //Scale to between -1 and 1
+	    if (count > 0)
+            value[0] = (double)varCount / (double)count;
+
 		return value;
 	}
 	
 
 	@Override
 	public String getName(int which) {
-		return "var.frac";
+		return "allele.balance";
 	}
 
 
@@ -63,7 +58,7 @@ public class VarFracCounter implements FeatureComputer {
 
 	@Override
 	public String getColumnDesc(int which) {
-		return "fraction of non-reference bases at site";
+		return "Fraction of variant bases at site";
 	}
 
 }

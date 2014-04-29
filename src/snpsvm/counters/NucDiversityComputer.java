@@ -12,7 +12,7 @@ import snpsvm.bamreading.FastaWindow;
  * @author brendan
  *
  */
-public class NucDiversityCounter implements FeatureComputer {
+public class NucDiversityComputer implements FeatureComputer {
 
 	public final double expA = 0.3;
 	public final double expC = 0.2;
@@ -74,8 +74,6 @@ public class NucDiversityCounter implements FeatureComputer {
 					+ (counts[2]-expT)*(counts[2]-expT)
 					+ (counts[3]-expG)*(counts[3]-expG);
 		
-		
-		val[0] = val[0]*2.0 - 1.0;
 		
 		return val;
 	}

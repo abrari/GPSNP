@@ -9,7 +9,7 @@ import snpsvm.bamreading.FastaWindow;
  * @author brendan
  *
  */
-public class HomopolymerRunCounter implements FeatureComputer {
+public class HomopolymerRunComputer implements FeatureComputer {
 
 	final double[] values = new double[2];
 	
@@ -17,7 +17,10 @@ public class HomopolymerRunCounter implements FeatureComputer {
 	
 	@Override
 	public String getName(int which) {
-		return "hrun.counter";
+        if (which == 0)
+    		return "homopolymer.left";
+        else
+            return "homopolymer.right";
 	}
 
 	@Override
@@ -29,9 +32,9 @@ public class HomopolymerRunCounter implements FeatureComputer {
 	@Override
 	public String getColumnDesc(int which) {
 		if (which == 0)
-			return "Length of homopolymer run to left of site";
+			return "Length of homopolymer run on reference to left of site";
 		else
-			return "Length of homopolymer run to right of site";
+			return "Length of homopolymer run on reference to right of site";
 	}
 	
 	@Override
@@ -79,9 +82,6 @@ public class HomopolymerRunCounter implements FeatureComputer {
             }
             values[1] = count;
         }
-		
-		values[0] = values[0] / maxLength * 2.0 -1.0;
-		values[1] = values[1] / maxLength * 2.0 -1.0;
 		
 		return values;
 	}
