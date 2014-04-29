@@ -9,19 +9,18 @@ import snpsvm.bamreading.MappedRead;
 
 public class NearbyQualComputer implements FeatureComputer {
 
-	public final int WINDOW_SIZE = 3; //Window spans the focus position, so 7 means three in either direction
+	public final int WINDOW_SIZE = 5; //Window spans the focus position, so 7 means three in either direction
 	double[] values = new double[WINDOW_SIZE];
 	double[] counts = new double[WINDOW_SIZE];
-	public final double defaultVal = 20;
-	
+
 	@Override
 	public String getName(int which) {
-		return "nearby.qualities";
+		return "mean.nearby.qual";
 	}
 
 	@Override
 	public int getColumnCount() {
-		return values.length;
+		return 1;
 	}
 
 
@@ -42,30 +41,34 @@ public class NearbyQualComputer implements FeatureComputer {
 			Iterator<MappedRead> it = col.getIterator();
 			while(it.hasNext()) {
 				MappedRead read = it.next();
-				
 				for(int i=0; i<WINDOW_SIZE; i++) {
 					int refPos = col.getCurrentPosition()-offset+i;
-					if (read.hasBaseAtReferencePos(refPos)) {
-						byte q = read.getQualityAtReferencePos(refPos);
-						values[i] += q;
-						counts[i]++;
-					}
-					else {
-						values[i] += defaultVal;
-						counts[i]++;
-					}
-				}
-			}
+                    if(refPos != col.getCurrentPosition()) { // Exclude current column
+                        if (read.hasBaseAtReferencePos(refPos)) {
+                            values[i] += read.getQualityAtReferencePos(refPos);
+                            counts[i]++;
+                        }
+                    }
+                }
+            }
 		}
-		
-		for(int i=0; i<WINDOW_SIZE; i++) {
-			if (counts[i] > 0) {
-				values[i] /= counts[i];
-				values[i] = values[i] / 60.0 * 2.0 -1.0;
-			}
+
+        double sumOfMeans = 0.0;
+        double allQualMeans;
+
+		for (int i=0; i<WINDOW_SIZE; i++) {
+            if (i != WINDOW_SIZE/2) {
+                if (counts[i] > 0) {
+                    values[i] /= counts[i];
+                }
+                sumOfMeans += values[i];
+            }
 		}
-		
-		return values;
+
+        if (WINDOW_SIZE > 1)
+            allQualMeans = sumOfMeans / (double)(WINDOW_SIZE-1);
+
+		return new double[]{allQualMeans};
 	}
 
 }

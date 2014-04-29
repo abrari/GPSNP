@@ -42,10 +42,6 @@ public class BaseQualityComputer implements FeatureComputer {
             while (it.hasNext()) {
                 MappedRead read = it.next();
                 if (read.hasBaseAtReferencePos(col.getCurrentPosition())) {
-                    // Exclude ambiguous base
-                    if (read.getBaseAtReferencePos(col.getCurrentPosition()) == 'N')
-                        continue;
-
                     values[0] += read.getQualityAtReferencePos(col.getCurrentPosition());
                     count++;
                 }
