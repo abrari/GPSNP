@@ -25,9 +25,9 @@ public class MismatchComputer extends VarCountComputer {
 	@Override
 	public String getColumnDesc(int which) {
 		if (which == ref)
-			return "Mean number of mismatching bases on reference reads";
+			return "Number of mismatching bases on reference reads";
 		else
-			return "Mean number of mismatching bases on non-reference reads";
+			return "Number of mismatching bases on non-reference reads";
 	}
 
 	@Override
@@ -35,9 +35,6 @@ public class MismatchComputer extends VarCountComputer {
 		values[ref] = 0.0;
 		values[alt] = 0.0;
 
-		double refReads = 0;
-		double altReads = 0;
-		
 		if (col.getDepth() > 0) {
 			Iterator<MappedRead> it = col.getIterator();
 			while(it.hasNext()) {
@@ -48,24 +45,14 @@ public class MismatchComputer extends VarCountComputer {
 						continue;
 					
 					int q = read.getMismatchCount(window);
-					int index = ref;
 					if ( b != refBase) {
-						index = alt;
-						altReads++;
-					}
-					else {
-						refReads++;
-					}
-					
-					values[index] += q;						
+						values[alt] += q;
+					} else {
+                        values[ref] += q;
+                    }
 				}
 			}
 		}
-		if (refReads > 0)
-			values[ref] /= refReads;
-		
-		if (altReads > 0)
-			values[alt] /= altReads;
 
 		return values;
 	}
