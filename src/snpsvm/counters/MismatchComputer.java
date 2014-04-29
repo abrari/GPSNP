@@ -10,7 +10,10 @@ public class MismatchComputer extends VarCountComputer {
 	
 	@Override
 	public String getName(int which) {
-		return "mismatch.counts";
+        if (which == ref)
+		    return "mismatch.ref";
+        else
+            return "mismatch.alt";
 	}
 	
 	@Override
@@ -63,19 +66,6 @@ public class MismatchComputer extends VarCountComputer {
 		
 		if (altReads > 0)
 			values[alt] /= altReads;
-			
-		 
-		if(values[ref] > 20.0) {
-			//System.out.println("Crazy ref value: " + values[ref] + " at pos: " + col.getCurrentContig() + ":" + col.getCurrentPosition());
-			values[ref] = 20.0;
-		}
-		if(values[alt] > 20.0) {
-			//System.out.println("Crazy alt value: " + values[alt] + " at pos: " + col.getCurrentContig() + ":" + col.getCurrentPosition());
-			values[alt] = 20.0;
-		}
-		
-		values[alt] = values[alt]/20.0* 2.0 -1.0;		
-		values[ref] = values[ref]/20.0* 2.0 -1.0;
 
 		return values;
 	}
