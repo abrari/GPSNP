@@ -12,20 +12,19 @@ import snpsvm.bamreading.MappedRead;
  * @author brendan
  *
  */
-public class MismatchTotal implements FeatureComputer {
+public class AreaMismatchComputer implements FeatureComputer {
 
 	private final double[] value = new double[1];
 	
 	@Override
 	public String getName(int which) {
-		return "mismatches.per.read";
+		return "area.mismatch";
 	}
 	
 	@Override
 	public double[] computeValue(final char refBase, FastaWindow window, AlignmentColumn col) {
 		value[0] = 0;
-		
-		double counted = 0;
+        double counted = 0;
 		if (col.getDepth() > 0) {
 			Iterator<MappedRead> it = col.getIterator();
 			while(it.hasNext()) {
@@ -36,18 +35,14 @@ public class MismatchTotal implements FeatureComputer {
 						continue;
 					
 					value[0] += read.getMismatchCount(window);
-					counted++;						
+                    counted++;
 				}
 			}
 		}
 		
-		if (counted > 0) {
-			value[0] /= counted;
-			if (value[0] > 100.0)
-				value[0] = 100.0;
-		}
-		
-		value[0] = value[0] / 100.0 *2.0 -1.0;
+		if (counted > 0)
+			value[0] = value[0] / counted;
+
 		return value;
 	}
 
