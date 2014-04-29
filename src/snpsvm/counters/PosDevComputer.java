@@ -20,7 +20,10 @@ public class PosDevComputer extends VarCountComputer {
 	
 	@Override
 	public String getName(int which) {
-		return "pos.dev";
+        if (which == ref)
+    		return "pos.dev.ref";
+        else
+            return "pos.dev.alt";
 	}
 
 
@@ -80,12 +83,9 @@ public class PosDevComputer extends VarCountComputer {
 				}
 			}
 		}
-		
-		values[ref] = Math.min(1024, values[ref]);
-		values[alt] = Math.min(1024, values[alt]);
-		
-		values[ref] = values[ref] / 1024.0 * 2.0 -1.0;
-		values[alt] = values[alt] / 1024.0 * 2.0 -1.0;
+
+        // Should the value log-transformed?
+
 		return values;
 	}
 

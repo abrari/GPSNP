@@ -48,7 +48,7 @@ public class FeatureComputation {
         ReferenceBAMEmitter emitter = new ReferenceBAMEmitter(reference, features, window, new CallingOptions());
         for(String contig : intervals.getContigs()) {
             for(IntervalList.Interval inter : intervals.getIntervalsInContig(contig)) {
-                emitter.emitWindow(contig, inter.getFirstPos(), 900, System.out);
+                emitter.emitWindow(contig, inter.getFirstPos(), 19000, System.out);
             }
         }
 

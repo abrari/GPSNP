@@ -35,7 +35,7 @@ public class CounterSource {
 		/* 4 */ counters.add( new PosDevComputer());  // 7-8
 		/* 5 */ counters.add( new VarFracCounter());  // 9
 		/* 6 */ counters.add( new MQComputer()); // 10-11
-		/* 7 */ counters.add( new DistroProbComputer()); // 12
+		/* 7 */ counters.add( new ErrorProbComputer()); // 12
 		/* 8 */ counters.add( new StrandBiasComputer()); // 13
 		/* 9 */ counters.add( new MismatchComputer()); //14 -15
 		/* 10 */ counters.add( new ReadPosCounter()); // 16 - 17

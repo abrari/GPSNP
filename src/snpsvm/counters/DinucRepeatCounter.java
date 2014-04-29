@@ -12,7 +12,10 @@ public class DinucRepeatCounter implements FeatureComputer {
 	
 	@Override
 	public String getName(int which) {
-		return "dinuc.counter";
+        if (which == 0)
+    		return "dinuc.left";
+        else
+            return "dinuc.right";
 	}
 	
 	@Override
@@ -75,8 +78,6 @@ public class DinucRepeatCounter implements FeatureComputer {
             values[1] = count;
         }
 		
-		values[0] = values[0] / maxLength * 2.0 -1.0;
-		values[1] = values[1] / maxLength * 2.0 -1.0;
 		return values;
 	}
 }

@@ -6,8 +6,9 @@ import snpsvm.bamreading.AlignmentColumn;
 import snpsvm.bamreading.FeatureComputer;
 import snpsvm.bamreading.FastaWindow;
 import snpsvm.bamreading.MappedRead;
+import snpsvm.util.BinomMath;
 
-public class DistroProbComputer implements FeatureComputer {
+public class ErrorProbComputer implements FeatureComputer {
 
 	double[] value = new double[1];
 	
@@ -19,7 +20,7 @@ public class DistroProbComputer implements FeatureComputer {
 
 	@Override
 	public String getColumnDesc(int which) {
-		return "Probability base was not sampled from binomial distribution with p=0.2";
+		return "Probability base was not sampled from binomial distribution with p=0.05";
 	}
 	
 	@Override
@@ -46,7 +47,8 @@ public class DistroProbComputer implements FeatureComputer {
 		
 		int T = refCount + altCount;
 		int X = altCount;
-		
+
+        // Cap at 250
 		if (T > 250) {
 			X = (250 * X)/T;
 			T = 250;
@@ -55,39 +57,23 @@ public class DistroProbComputer implements FeatureComputer {
 		
 		//Compute het prob
 		//Each read has 50% chance of coming from source with a non-reference base
-		double hetProb = binomPDF((int)Math.round(X), (int)Math.round(T), 0.5);
+		double hetProb = BinomMath.binomPDF((int)Math.round(X), (int) Math.round(T), 0.5);
 		
 		
 		//Compute homo prob
-		double homProb = binomPDF((int)Math.round(X), (int)Math.round(T), 0.99);
+		double homProb = BinomMath.binomPDF((int) Math.round(X), (int) Math.round(T), 0.99);
 		
 		//Compute error prob
-		double errProb = binomPDF((int)Math.round(X), (int)Math.round(T), 0.05);
+		double errProb = BinomMath.binomPDF((int) Math.round(X), (int) Math.round(T), 0.05);
+
+        value[0] = errProb / (hetProb + homProb + errProb);
 		
-		double result = Math.log(errProb / (hetProb + homProb + errProb)); 
-		
-		if (result < -10)
-			result = -10;
-		
-		value[0] = result/(-10.0) *2.0 - 1.0;
 		return value;
 	}
 	
-	public static double binomPDF(int k, int n, double p) {		
-		return nChooseK(n, k) * Math.pow(p, k) * Math.pow(1.0-p, n-k);
-	}
-	
-	public static double nChooseK(int n, int k) {
-		double prod = 1.0;
-		for(double i=1; i<=k; i++) {
-			prod *= (double)(n-k+i)/i;
-		}
-		return prod;
-	}
-
 	@Override
 	public String getName(int which) {
-		return "distro.prob";
+		return "error.prob";
 	}
 	
 }
