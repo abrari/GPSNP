@@ -48,15 +48,36 @@ public class VariantCandidate {
         }
     }
 
-    public void printFeatures(PrintStream out) {
+    public void printMetaData(PrintStream out) {
+        out.print(alnCol.getCurrentPosition() + "\t" + refBase + "\t" + alnCol.getBasesAsString());
+    }
+
+    public void printFeatureValues(PrintStream out) {
         for (double value : featureValues) {
             out.print("\t" + formatter.format(value));
         }
+        out.print("\t" + formatter.format(flankLeft));
+        out.print("\t" + formatter.format(flankRight));
     }
 
     public int getPosition() {
         return position;
     }
 
+    public void computeFlanks(int prevPos, int nextPos) {
+        flankLeft  = position - prevPos - 1;
+        flankRight = nextPos - position - 1;
+    }
 
+    public char getRefBase() {
+        return refBase;
+    }
+
+    public FastaWindow getRefReader() {
+        return refReader;
+    }
+
+    public AlignmentColumn getAlnCol() {
+        return alnCol;
+    }
 }

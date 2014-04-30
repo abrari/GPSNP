@@ -73,7 +73,7 @@ public class ReferenceBAMEmitter {
 
             VariantCandidate var = new VariantCandidate(alnCol.getCurrentPosition(), refBase, refReader, alnCol);
             var.computeFeatures();
-            var.printFeatures(out);
+            var.printFeatureValues(out);
 
 			out.println();
 			

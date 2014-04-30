@@ -42,22 +42,13 @@ public class FeatureComputation {
 
         // Debug message
 
-/*
         System.out.print("Pos\tRef\tAlt");
-        for(FeatureComputer feature : features) {
-            for(int i=0; i<feature.getColumnCount(); i++) {
-                System.out.print("\t" + feature.getName(i));
-            }
-        }
-        System.out.println();
-*/
-
-        System.out.println("pos\tprev\tcurrent\tnext");
+        FeatureList.printNames();
 
         for(String contig : intervals.getContigs()) {
             for(IntervalList.Interval inter : intervals.getIntervalsInContig(contig)) {
                 int start = inter.getFirstPos();
-                int end = 1000;
+                int end = inter.getLastPos();
 
                 try {
                     refReader.resetTo(contig, Math.max(1, start - refReader.getWindowSize() / 2));
@@ -67,32 +58,20 @@ public class FeatureComputation {
 
                     VariantCandidate prevVar = null, var = null, curVar = null, nextVar = null;
 
+                    int varCount = 0;
                     while(curPos < end && alnCol.hasMoreReadsInCurrentContig()) {
                         if (alnCol.getApproxDepth() >= minDepth) {
                             final char refBase = refReader.getBaseAt(alnCol.getCurrentPosition());
                             if (refBase != 'N' && alnCol.hasXDifferingBases(refBase, minVarDepth)) {
-                                // System.out.print(alnCol.getCurrentPosition() + "\t" + refBase + "\t" + alnCol.getBasesAsString());
+                                var = new VariantCandidate(alnCol.getCurrentPosition(), refBase, refReader, alnCol);
 
-                                curVar = new VariantCandidate(alnCol.getCurrentPosition(), refBase, refReader, alnCol);
-                                curVar.computeFeatures();
+                                var.computeFeatures();
+                                var.printMetaData(System.out);
+                                var.printFeatureValues(System.out);
 
-                                if (prevVar == null) {
-                                    prevVar = curVar;
-                                } else {
-                                    prevVar = var;
-                                }
-                                if (var == null) {
-                                    var = curVar;
-                                } else {
-                                    var = nextVar;
-                                }
-                                nextVar = curVar;
+                                System.out.println();
 
-                                System.out.println(curPos + "\t" + prevVar.getPosition() + "\t" + var.getPosition() + "\t" + nextVar.getPosition());
-
-                                // var.printFeatures(System.out);
-
-                                // System.out.println();
+                                varCount++;
                             }
                         }
 
