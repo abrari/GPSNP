@@ -56,7 +56,7 @@ public class FeatureComputation {
 
                     int curPos = start;
 
-                    VariantCandidate prevVar = null, var = null, curVar = null, nextVar = null;
+                    VariantCandidate var = null;
 
                     int varCount = 0;
                     while(curPos < end && alnCol.hasMoreReadsInCurrentContig()) {

@@ -182,5 +182,8 @@ public class FastaWindow {
 	public boolean containsContig(String contig) {
 		return reader.containsContig(contig);
 	}
-	
+
+    public int getWindowSize() {
+        return windowSize;
+    }
 }
