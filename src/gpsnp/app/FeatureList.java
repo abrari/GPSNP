@@ -22,4 +22,13 @@ public class FeatureList {
         return computers;
     }
 
+    public static void printNames() {
+        for(FeatureComputer feature : getFeatures()) {
+            for(int i=0; i<feature.getColumnCount(); i++) {
+                System.out.print("\t" + feature.getName(i));
+            }
+        }
+        System.out.println("\tflank.left\tflank.right");
+    }
+
 }

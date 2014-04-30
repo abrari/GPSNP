@@ -71,18 +71,10 @@ public class ReferenceBAMEmitter {
 
             out.print(alnCol.getCurrentPosition() + "\t" + refBase + "\t" + alnCol.getBasesAsString());
 
-            int index = 1;
-			for(FeatureComputer counter : counters) {
-				final double[] values = counter.computeValue(refBase, refReader, alnCol);
-				for(int i=0; i<values.length; i++) {
-					if (Double.isInfinite(values[i]) || Double.isNaN(values[i])) {
-						throw new IllegalArgumentException("Non-regular value for counter: " + counter.getName(i) + " found value=" + values[i]);
-					}
+            VariantCandidate var = new VariantCandidate(alnCol.getCurrentPosition(), refBase, refReader, alnCol);
+            var.computeFeatures();
+            var.printFeatureValues(out);
 
-					out.print("\t" + formatter.format(values[i]) );
-					index++;
-				}
-			}
 			out.println();
 			
 			if (positionWriter != null) {
