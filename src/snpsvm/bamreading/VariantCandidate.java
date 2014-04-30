@@ -54,5 +54,9 @@ public class VariantCandidate {
         }
     }
 
+    public int getPosition() {
+        return position;
+    }
+
 
 }

@@ -42,6 +42,7 @@ public class FeatureComputation {
 
         // Debug message
 
+/*
         System.out.print("Pos\tRef\tAlt");
         for(FeatureComputer feature : features) {
             for(int i=0; i<feature.getColumnCount(); i++) {
@@ -49,29 +50,49 @@ public class FeatureComputation {
             }
         }
         System.out.println();
+*/
 
-        ReferenceBAMEmitter emitter = new ReferenceBAMEmitter(reference, features, window, new CallingOptions());
+        System.out.println("pos\tprev\tcurrent\tnext");
+
         for(String contig : intervals.getContigs()) {
             for(IntervalList.Interval inter : intervals.getIntervalsInContig(contig)) {
                 int start = inter.getFirstPos();
-                int end = inter.getLastPos();
+                int end = 1000;
 
                 try {
                     refReader.resetTo(contig, Math.max(1, start - refReader.getWindowSize() / 2));
                     alnCol.advanceTo(contig, start);
 
                     int curPos = start;
+
+                    VariantCandidate prevVar = null, var = null, curVar = null, nextVar = null;
+
                     while(curPos < end && alnCol.hasMoreReadsInCurrentContig()) {
                         if (alnCol.getApproxDepth() >= minDepth) {
                             final char refBase = refReader.getBaseAt(alnCol.getCurrentPosition());
                             if (refBase != 'N' && alnCol.hasXDifferingBases(refBase, minVarDepth)) {
-                                System.out.print(alnCol.getCurrentPosition() + "\t" + refBase + "\t" + alnCol.getBasesAsString());
+                                // System.out.print(alnCol.getCurrentPosition() + "\t" + refBase + "\t" + alnCol.getBasesAsString());
 
-                                VariantCandidate var = new VariantCandidate(alnCol.getCurrentPosition(), refBase, refReader, alnCol);
-                                var.computeFeatures();
-                                var.printFeatures(System.out);
+                                curVar = new VariantCandidate(alnCol.getCurrentPosition(), refBase, refReader, alnCol);
+                                curVar.computeFeatures();
 
-                                System.out.println();
+                                if (prevVar == null) {
+                                    prevVar = curVar;
+                                } else {
+                                    prevVar = var;
+                                }
+                                if (var == null) {
+                                    var = curVar;
+                                } else {
+                                    var = nextVar;
+                                }
+                                nextVar = curVar;
+
+                                System.out.println(curPos + "\t" + prevVar.getPosition() + "\t" + var.getPosition() + "\t" + nextVar.getPosition());
+
+                                // var.printFeatures(System.out);
+
+                                // System.out.println();
                             }
                         }
 
