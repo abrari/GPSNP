@@ -28,7 +28,11 @@ public class FastaWindow {
 //	public Map<String, Integer> getContigSizes() {
 //		return reader.getContigSizes();
 //	}
-	
+
+    public int getWindowSize() {
+        return windowSize;
+    }
+
 	/**
 	 * Reference index of left (trailing) edge
 	 * @return
