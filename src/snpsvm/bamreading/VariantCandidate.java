@@ -33,7 +33,7 @@ public class VariantCandidate {
 
     public void computeFeatures() {
         List<FeatureComputer> computers = FeatureList.getFeatures();
-        featureValues = new double[computers.size()];
+        featureValues = new double[FeatureList.getFeatureCount()];
 
         int c = 0;
         for(FeatureComputer computer: computers) {
