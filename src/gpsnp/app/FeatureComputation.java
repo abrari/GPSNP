@@ -42,13 +42,13 @@ public class FeatureComputation {
 
         // Debug message
 
-        System.out.print("Pos\tRef\tAlt");
+        System.out.print("Chr\tPos\tRef\tAlt");
         FeatureList.printNames();
 
         for(String contig : intervals.getContigs()) {
             for(IntervalList.Interval inter : intervals.getIntervalsInContig(contig)) {
                 int start = inter.getFirstPos();
-                int end = inter.getLastPos();
+                int end = 500000; // inter.getLastPos();
 
                 try {
                     refReader.resetTo(contig, Math.max(1, start - refReader.getWindowSize() / 2));
@@ -64,6 +64,8 @@ public class FeatureComputation {
                             final char refBase = refReader.getBaseAt(alnCol.getCurrentPosition());
                             if (refBase != 'N' && alnCol.hasXDifferingBases(refBase, minVarDepth)) {
                                 var = new VariantCandidate(alnCol.getCurrentPosition(), refBase, refReader, alnCol);
+
+                                System.out.print(contig + "\t");
 
                                 var.computeFeatures();
                                 var.printMetaData(System.out);
