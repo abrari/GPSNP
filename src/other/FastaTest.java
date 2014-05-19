@@ -1,3 +1,5 @@
+package other;
+
 import snpsvm.bamreading.FastaIndex;
 import snpsvm.bamreading.FastaReader2;
 import snpsvm.bamreading.FastaWindow;
