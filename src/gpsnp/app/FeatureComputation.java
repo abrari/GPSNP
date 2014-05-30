@@ -48,7 +48,7 @@ public class FeatureComputation {
         for(String contig : intervals.getContigs()) {
             for(IntervalList.Interval inter : intervals.getIntervalsInContig(contig)) {
                 int start = inter.getFirstPos();
-                int end = 500000; // inter.getLastPos();
+                int end = inter.getLastPos();
 
                 try {
                     refReader.resetTo(contig, Math.max(1, start - refReader.getWindowSize() / 2));
