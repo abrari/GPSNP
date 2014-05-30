@@ -34,17 +34,58 @@ public class TrueFalseSNP {
 
     }
 
-    public static void main(String[] args) throws Exception {
-
-        String trueSnpPath = args[0];
-        readTrueSnps(trueSnpPath);
-
+    private static void printTrueSnps() {
         for(Map.Entry<String, HashSet<Integer>> chrPos : trueSnps.entrySet()) {
             System.out.println(chrPos.getKey());
             for (Integer pos : chrPos.getValue()) {
                 System.out.println(" - " + pos);
             }
         }
+    }
+
+    private static boolean candidateIsTrue(String contig, Integer pos) {
+
+        if(trueSnps.containsKey(contig)) {
+            if(trueSnps.get(contig).contains(pos)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        return false;
+    }
+
+    public static void main(String[] args) throws Exception {
+
+        String trueSnpPath = args[0];
+        readTrueSnps(trueSnpPath);
+
+        String candidateSnpPath = args[1];
+        BufferedReader reader = new BufferedReader(new FileReader(candidateSnpPath));
+        String line;
+
+        int trueCount = 0;
+        int falseCount = 0;
+
+        while((line = reader.readLine()) != null) {
+
+            String[] d = line.split("\t");
+            System.out.print(d[0] + ":" + d[1] + "\t");
+
+            if(candidateIsTrue(d[0], Integer.valueOf(d[1]))) {
+                trueCount++;
+                System.out.print("✓");
+            } else {
+                falseCount++;
+            }
+
+            System.out.println();
+
+        }
+
+        System.err.println("True variants:  " + trueCount + " (" + (double)trueCount/(trueCount+falseCount)*100 + "%)");
+        System.err.println("False variants: " + falseCount + " (" + (double)falseCount/(trueCount+falseCount)*100 + "%)");
 
     }
 
