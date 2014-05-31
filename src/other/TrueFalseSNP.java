@@ -6,6 +6,7 @@ import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import snpsvm.app.ArgParser;
 
 public class TrueFalseSNP {
 
@@ -59,10 +60,14 @@ public class TrueFalseSNP {
 
     public static void main(String[] args) throws Exception {
 
-        String trueSnpPath = args[0];
+        ArgParser inputParser = new ArgParser(args);
+
+        String trueSnpPath = inputParser.getStringArg("-T");
         readTrueSnps(trueSnpPath);
 
-        String candidateSnpPath = args[1];
+        Integer printPositions = inputParser.getIntegerArg("-p");   // 0: just print statistics, 1: print all positions
+
+        String candidateSnpPath = inputParser.getStringArg("-C");
         BufferedReader reader = new BufferedReader(new FileReader(candidateSnpPath));
         String line;
 
@@ -74,10 +79,10 @@ public class TrueFalseSNP {
             String[] d = line.split("\t");
             if(d[0].equalsIgnoreCase("Chr")) continue;
 
-            System.out.print(d[0] + ":" + d[1] + "\t");
+            if(printPositions == 1) System.out.print(d[0] + ":" + d[1] + "\t");
 
             if(candidateIsTrue(d[0], Integer.valueOf(d[1]))) {
-                System.out.print("✓");
+                if(printPositions == 1) System.out.print("✓");
 
                 int[] tf = contigTFCount.get(d[0]);
                 if(tf == null) {
@@ -98,19 +103,27 @@ public class TrueFalseSNP {
                 }
             }
 
-            System.out.println();
+            if(printPositions == 1) System.out.println();
 
         }
 
         DecimalFormat df = new DecimalFormat("#.00");
 
+        int totalTrueCount = 0, totalFalseCount = 0;
+
         for (Map.Entry<String, int[]> entry : contigTFCount.entrySet()) {
             int trueCount = entry.getValue()[0];
             int falseCount = entry.getValue()[1];
+            totalTrueCount += trueCount;
+            totalFalseCount += falseCount;
             System.err.println("Statistics for " + entry.getKey() + ":");
             System.err.println("- True variants:  " + trueCount + " (" +  df.format((double)trueCount/(trueCount+falseCount)*100) + "%)");
             System.err.println("- False variants: " + falseCount + " (" + df.format((double)falseCount/(trueCount+falseCount)*100) + "%)");
         }
+
+        System.err.println("Total:");
+        System.err.println("- True variants:  " + totalTrueCount + " (" +  df.format((double)totalTrueCount/(totalTrueCount+totalFalseCount)*100) + "%)");
+        System.err.println("- False variants: " + totalFalseCount + " (" + df.format((double)totalFalseCount/(totalTrueCount+totalFalseCount)*100) + "%)");
 
     }
 
