@@ -4,8 +4,6 @@
       <root url="jar://$PROJECT_DIR$/lib/samtools.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES>
-      <root url="file://$PROJECT_DIR$/../samsdk" />
-    </SOURCES>
+    <SOURCES />
   </library>
 </component>

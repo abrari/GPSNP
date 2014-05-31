@@ -1,4 +1,4 @@
-/**
+package other; /**
  *
  * Testing samtools SDK
  *

@@ -10,7 +10,7 @@ import snpsvm.bamreading.intervalProcessing.IntervalList;
 import snpsvm.counters.CounterSource;
 
 /**
- * Test computing features listed on FeatureList
+ * other.Test computing features listed on FeatureList
  *
  * Created by abrari on 4/27/14.
  */
