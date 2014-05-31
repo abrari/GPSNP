@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import snpsvm.app.ArgParser;
 import snpsvm.bamreading.*;
 import snpsvm.bamreading.intervalProcessing.IntervalList;
@@ -17,17 +18,20 @@ import snpsvm.counters.CounterSource;
 public class FeatureComputation {
 
     private static int minDepth = 2;
-    private static int minVarDepth = 2;
 
     public static void main(String[] args) throws Exception {
 
         ArgParser inputParser = new ArgParser(args);
         String referencePath = null;
         String inputBAMPath = null;
+        int minVarDepth;
+        int computeFeatures;
         IntervalList intervals;
 
         referencePath = inputParser.getStringArg("-R");
         inputBAMPath = inputParser.getStringArg("-B");
+        minVarDepth = inputParser.getIntegerArg("-v");
+        computeFeatures = inputParser.getIntegerArg("-f"); // 0 not compute (positions only), 1 compute
 
         File reference = new File(referencePath);
         File inputBAM = new File(inputBAMPath);
@@ -63,13 +67,16 @@ public class FeatureComputation {
                         if (alnCol.getApproxDepth() >= minDepth) {
                             final char refBase = refReader.getBaseAt(alnCol.getCurrentPosition());
                             if (refBase != 'N' && alnCol.hasXDifferingBases(refBase, minVarDepth)) {
-                                var = new VariantCandidate(alnCol.getCurrentPosition(), refBase, refReader, alnCol);
-
                                 System.out.print(contig + "\t");
 
-                                var.computeFeatures();
-                                var.printMetaData(System.out);
-                                var.printFeatureValues(System.out);
+                                if (computeFeatures == 0) {
+                                    System.out.print(alnCol.getCurrentPosition());
+                                } else {
+                                    var = new VariantCandidate(alnCol.getCurrentPosition(), refBase, refReader, alnCol);
+                                    var.computeFeatures();
+                                    var.printMetaData(System.out);
+                                    var.printFeatureValues(System.out);
+                                }
 
                                 System.out.println();
 
