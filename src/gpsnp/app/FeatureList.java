@@ -50,12 +50,16 @@ public class FeatureList {
     }
 
     public static void printNames() {
+        printNames("\t");
+    }
+
+    public static void printNames(String columnSeparator) {
         for(FeatureComputer feature : getFeatures()) {
             for(int i=0; i<feature.getColumnCount(); i++) {
-                System.out.print("\t" + feature.getName(i));
+                System.out.print(columnSeparator + feature.getName(i));
             }
         }
-        System.out.println("\tflank.left\tflank.right");
+        System.out.println(columnSeparator + "flank.left" + columnSeparator + "flank.right");
     }
 
 }
