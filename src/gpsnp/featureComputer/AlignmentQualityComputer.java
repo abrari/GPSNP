@@ -47,8 +47,11 @@ public class AlignmentQualityComputer implements FeatureComputer {
                     if (read.getBaseAtReferencePos(col.getCurrentPosition()) == 'N')
                         continue;
 
-                    values[0] += read.getRecord().getMappingQuality();
-                    count++;
+                    // Only count variant base
+                    if (read.getBaseAtReferencePos(col.getCurrentPosition()) != refBase) {
+                        values[0] += read.getRecord().getMappingQuality();
+                        count++;
+                    }
                 }
             }
         }

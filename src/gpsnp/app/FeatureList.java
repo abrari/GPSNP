@@ -19,15 +19,11 @@ public class FeatureList {
         computers.add(new TsTvComputer());
         computers.add(new MaxQualAlleleComputer());
         computers.add(new MeanQualAlleleComputer());
-        computers.add(new FreqAlleleComputer());
         computers.add(new RelativeDistanceComputer());
-        computers.add(new BaseQualityComputer());
         computers.add(new DepthComputer());
         computers.add(new AlignmentQualityComputer());
         computers.add(new ErrorProbComputer());
         computers.add(new DinucRepeatCounter());
-        computers.add(new PosDevComputer());
-        computers.add(new ReadPosCounter());
         computers.add(new StrandBiasComputer());
         computers.add(new AreaMismatchComputer());
         computers.add(new HomopolymerRunComputer());
@@ -60,6 +56,14 @@ public class FeatureList {
             }
         }
         System.out.println(columnSeparator + "flank.left" + columnSeparator + "flank.right");
+    }
+
+    public static void main(String[] args) {
+        for(FeatureComputer feature : getFeatures()) {
+            for(int i=0; i<feature.getColumnCount(); i++) {
+                System.out.println(feature.getName(i) + "\t" + feature.getClass().getSimpleName());
+            }
+        }
     }
 
 }

@@ -4,16 +4,16 @@ import java.util.Iterator;
 
 import snpsvm.bamreading.AlignmentColumn;
 import snpsvm.bamreading.FastaWindow;
+import snpsvm.bamreading.FeatureComputer;
 import snpsvm.bamreading.MappedRead;
 
-public class MismatchComputer extends VarCountComputer {
-	
-	@Override
+public class MismatchComputer implements FeatureComputer {
+
+    final double[] values = new double[1]; // Only compute ALT bases
+
+    @Override
 	public String getName(int which) {
-        if (which == ref)
-		    return "mismatch.ref";
-        else
-            return "mismatch.alt";
+		return "mismatch.alt";
 	}
 	
 	@Override
@@ -21,19 +21,14 @@ public class MismatchComputer extends VarCountComputer {
 		return values.length;
 	}
 
-
 	@Override
 	public String getColumnDesc(int which) {
-		if (which == ref)
-			return "Number of mismatching bases on reference reads";
-		else
-			return "Number of mismatching bases on non-reference reads";
+	    return "Number of mismatching bases on non-reference reads";
 	}
 
 	@Override
 	public double[] computeValue(final char refBase, FastaWindow window, AlignmentColumn col) {
-		values[ref] = 0.0;
-		values[alt] = 0.0;
+		values[0] = 0.0;
 
 		if (col.getDepth() > 0) {
 			Iterator<MappedRead> it = col.getIterator();
@@ -45,11 +40,10 @@ public class MismatchComputer extends VarCountComputer {
 						continue;
 					
 					int q = read.getMismatchCount(window);
+                    // Only count variant base
 					if ( b != refBase) {
-						values[alt] += q;
-					} else {
-                        values[ref] += q;
-                    }
+						values[0] += q;
+					}
 				}
 			}
 		}

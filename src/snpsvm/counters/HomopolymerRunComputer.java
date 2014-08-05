@@ -11,16 +11,13 @@ import snpsvm.bamreading.FastaWindow;
  */
 public class HomopolymerRunComputer implements FeatureComputer {
 
-	final double[] values = new double[2];
+	final double[] values = new double[1]; // now we combine left and right value
 	
 	final int maxLength = 10; //dont look beyond this many bases in either direction
 	
 	@Override
 	public String getName(int which) {
-        if (which == 0)
-    		return "homopolymer.left";
-        else
-            return "homopolymer.right";
+        return "homopolymer.length";
 	}
 
 	@Override
@@ -31,25 +28,22 @@ public class HomopolymerRunComputer implements FeatureComputer {
 
 	@Override
 	public String getColumnDesc(int which) {
-		if (which == 0)
-			return "Length of homopolymer run on reference to left of site";
-		else
-			return "Length of homopolymer run on reference to right of site";
+		return "Length of homopolymer run on reference to left and right of site";
 	}
 	
 	@Override
-	public double[] computeValue(char refBase, FastaWindow window,
-			AlignmentColumn col) {
+	public double[] computeValue(char refBase, FastaWindow window, AlignmentColumn col) {
 
         char base;
         double count;
+        double left, right;
 		
 		//Looking backward
 		int refPos = col.getCurrentPosition();
 
         // Fix if near left edge of contig where refPos-1 will fail
         if(refPos <= 1) {
-            values[0] = 0.0;
+            left = 0.0;
         } else {
             base = window.getBaseAt(refPos - 1);
             count = 0;
@@ -59,14 +53,14 @@ public class HomopolymerRunComputer implements FeatureComputer {
                 else
                     break;
             }
-            values[0] = count;
+            left = count;
         }
 
         //Looking forward
 
         // Fix if near right edge of window where refPos+1 will fail
         if(refPos >= window.indexOfRightEdge() - 1) {
-            values[1] = 0.0;
+            right = 0.0;
         } else {
             base = window.getBaseAt(refPos + 1);
             count = 0;
@@ -80,9 +74,10 @@ public class HomopolymerRunComputer implements FeatureComputer {
                 } else
                     break;
             }
-            values[1] = count;
+            right = count;
         }
-		
+
+        values[0] = left + right;
 		return values;
 	}
 

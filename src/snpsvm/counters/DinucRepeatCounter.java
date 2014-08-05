@@ -6,16 +6,13 @@ import snpsvm.bamreading.FastaWindow;
 
 public class DinucRepeatCounter implements FeatureComputer {
 
-	final double[] values = new double[2];
+	final double[] values = new double[1]; // now we combine left and right value
 	
 	final int maxLength = 10; //dont look beyond this many bases in either direction
 	
 	@Override
 	public String getName(int which) {
-        if (which == 0)
-    		return "dinuc.left";
-        else
-            return "dinuc.right";
+        return "dinuc.repeat";
 	}
 	
 	@Override
@@ -26,24 +23,21 @@ public class DinucRepeatCounter implements FeatureComputer {
 
 	@Override
 	public String getColumnDesc(int which) {
-		if (which == 0)
-			return "Number of Dinucleotide repeats to left of site";
-		else
-			return "Number of Dinucleotide repeats to right of site";
+		return "Number of Dinucleotide repeats to left and right of site";
 	}
 
 	@Override
-	public double[] computeValue(char refBase, FastaWindow window,
-			AlignmentColumn col) {
+	public double[] computeValue(char refBase, FastaWindow window, AlignmentColumn col) {
 
         char base0, base1;
         double count;
+        double left, right;
 		
 		//Looking backward
 		int refPos = col.getCurrentPosition();
         // Fix if near left edge of contig
         if(refPos <= 2) {
-            values[0] = 0.0;
+            left = 0.0;
         } else {
             base0 = window.getBaseAt(refPos-1);
             base1 = window.getBaseAt(refPos-2);
@@ -56,13 +50,13 @@ public class DinucRepeatCounter implements FeatureComputer {
                         break;
                 }
             }
-            values[0] = count;
+            left = count;
         }
 		
 		//Looking forward
         // Fix if near right edge of window where refPos+2 will fail
         if(refPos >= window.indexOfRightEdge() - 2) {
-            values[1] = 0.0;
+            right = 0.0;
         } else {
             base0 = window.getBaseAt(refPos + 1);
             base1 = window.getBaseAt(refPos + 2);
@@ -75,9 +69,10 @@ public class DinucRepeatCounter implements FeatureComputer {
                         break;
                 }
             }
-            values[1] = count;
+            right = count;
         }
-		
+
+		values[0] = left + right;
 		return values;
 	}
 }
