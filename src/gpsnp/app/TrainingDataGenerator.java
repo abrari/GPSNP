@@ -56,7 +56,7 @@ public class TrainingDataGenerator {
                 System.out.print(feature.getName(i) + columnSeparator);
             }
         }
-        System.out.println("flank.left" + columnSeparator + "flank.right" + columnSeparator + "class");
+        System.out.println("nearest.flank" + columnSeparator + "class");
     }
 
     private static void printArffHeader() {
@@ -71,8 +71,7 @@ public class TrainingDataGenerator {
             }
         }
 
-        System.out.println("@ATTRIBUTE\tflank.left\tNUMERIC");
-        System.out.println("@ATTRIBUTE\tflank.right\tNUMERIC");
+        System.out.println("@ATTRIBUTE\tnearest.flank\tNUMERIC");
         System.out.println("@ATTRIBUTE\tclass\t{true,false}");
 
         System.out.println("@DATA");
@@ -148,7 +147,7 @@ public class TrainingDataGenerator {
                 }
                 System.out.print(columnSeparator);
             }
-            System.out.print(flankLeft + columnSeparator + flankRight + columnSeparator);
+            System.out.print(Math.min(flankLeft, flankRight) + columnSeparator); // Take the minimum of the flank size
 
             if(candidateIsTrue(chr, pos)) {
                 System.out.print("true");
