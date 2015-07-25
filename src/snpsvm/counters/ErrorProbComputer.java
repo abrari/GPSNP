@@ -59,11 +59,14 @@ public class ErrorProbComputer implements FeatureComputer {
 		//Each read has 50% chance of coming from source with a non-reference base
 		double hetProb = BinomMath.binomPDF((int)Math.round(X), (int) Math.round(T), 0.5);
 		
-		
+
 		//Compute homo prob
 		double homProb = BinomMath.binomPDF((int) Math.round(X), (int) Math.round(T), 0.99);
 		
 		//Compute error prob
+        //Example:
+        //   total=10, alt=1, then errorProb = 0.3
+        //   total=10, alt=2, then errorProb = 0.07
 		double errProb = BinomMath.binomPDF((int) Math.round(X), (int) Math.round(T), 0.05);
 
         value[0] = errProb / (hetProb + homProb + errProb);

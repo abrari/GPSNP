@@ -59,10 +59,15 @@ public class StrandBiasComputer implements FeatureComputer {
 			}
 		}
 
+        // Strand bias = when the variant base just supported by one strand (forward/reverse)
+
         // Pearson's chi square test
-		
-		value[0] = (forward[1]/reverse[1] - 0.5)*(forward[1]/reverse[1] - 0.5) / 0.5;
-		value[0] += (forward[0]/reverse[0] - 0.5)*(forward[0]/reverse[0] - 0.5) / 0.5;
+        // Testing goodness of fit (how observed match expected distribution)
+        // Testing if strand bias of alt and ref are fair
+        // If not fair, likely an error
+
+		value[0] = (forward[1]/reverse[1] - 0.5)*(forward[1]/reverse[1] - 0.5) / 0.5;   // SB of alt
+		value[0] += (forward[0]/reverse[0] - 0.5)*(forward[0]/reverse[0] - 0.5) / 0.5;  // SB of ref
 		
 		return value;
 	}
