@@ -14,7 +14,7 @@ import snpsvm.util.BinomMath;
 public class SeSpRuleClassifier implements VariantClassifier {
 
     private boolean isTrueSNP(VariantCandidate v) {
-        if (v.val("max.qual.minor") >= 28.341 && v.val("max.qual.major") >= 26.184 && v.val("total.depth") < 47.256) {
+        if (v.val("max.qual.minor") >= 58.341 && v.val("max.qual.major") >= 46.184 && v.val("total.depth") < 47.256) {
             return true;
         } else if(v.val("max.qual.minor") <= 58.933 || v.val("max.qual.major") < 48.921 || v.val("total.depth") >= 63.330) {
             return false;

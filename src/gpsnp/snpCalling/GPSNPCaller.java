@@ -11,7 +11,6 @@ import snpsvm.bamreading.variant.Variant;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -39,7 +38,7 @@ public class GPSNPCaller implements IntervalCaller<List<Variant>> {
                      CallingOptions options) {
         this.referenceFile = referenceFile;
         this.intervals = intervals;
-        this.counters = FeatureList.getFeatures();
+        this.counters = FeatureList.getFeatures(options.isPhred33Qual());
         this.bamWindows = bamWindows;
         this.options = options;
         this.classifier = new SeSpRuleClassifier();

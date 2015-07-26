@@ -16,14 +16,21 @@ public class CallingOptions {
 	double minQuality = DEFAULT_MIN_QUALITY;
 	
 	boolean removeTempFiles = true;
+    boolean phred33Qual = false;    // is the input quality in phred+33 scoring?
 	
 	public CallingOptions() {
 		
 	}
 
-	
-	
-	public boolean isRemoveTempFiles() {
+    public boolean isPhred33Qual() {
+        return phred33Qual;
+    }
+
+    public void setPhred33Qual(boolean phred33Qual) {
+        this.phred33Qual = phred33Qual;
+    }
+
+    public boolean isRemoveTempFiles() {
 		return removeTempFiles;
 	}
 

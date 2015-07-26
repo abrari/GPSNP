@@ -9,9 +9,19 @@ import snpsvm.bamreading.MappedRead;
 
 public class NearbyQualComputer implements FeatureComputer {
 
+    private boolean isPhred33;
+
 	public final int WINDOW_SIZE = 5; //Window spans the focus position, so 7 means three in either direction
 	double[] values = new double[WINDOW_SIZE];
 	double[] counts = new double[WINDOW_SIZE];
+
+    public NearbyQualComputer() {
+
+    }
+
+    public NearbyQualComputer(boolean isPhred33) {
+        this.isPhred33 = isPhred33;
+    }
 
 	@Override
 	public String getName(int which) {
@@ -46,6 +56,8 @@ public class NearbyQualComputer implements FeatureComputer {
                     if(refPos != col.getCurrentPosition()) { // Exclude current column
                         if (read.hasBaseAtReferencePos(refPos)) {
                             values[i] += read.getQualityAtReferencePos(refPos);
+                            if (isPhred33) values[i] += 31;
+
                             counts[i]++;
                         }
                     }

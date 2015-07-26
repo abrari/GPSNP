@@ -12,6 +12,15 @@ import java.util.Iterator;
  * Created by abrari on 4/28/14.
  */
 public class MeanQualAlleleComputer extends AlleleComputer {
+
+    public MeanQualAlleleComputer() {
+
+    }
+
+    public MeanQualAlleleComputer(boolean isPhred33) {
+        this.isPhred33 = isPhred33;
+    }
+
     @Override
     public String getName(int which) {
         if (which == major)
@@ -47,6 +56,8 @@ public class MeanQualAlleleComputer extends AlleleComputer {
                 if (read.hasBaseAtReferencePos(col.getCurrentPosition())) {
                     byte b = read.getBaseAtReferencePos(col.getCurrentPosition());
                     byte q = read.getQualityAtReferencePos(col.getCurrentPosition());
+
+                    if (isPhred33) q += 31;
 
                     if ((char) b == getMajorAllele()) {
                         values[major] += q;

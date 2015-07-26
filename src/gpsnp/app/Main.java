@@ -226,6 +226,7 @@ public class Main {
         }
 
         ops.setRemoveTempFiles( ! args.hasOption("-preserve") );
+        ops.setPhred33Qual( args.hasOption("-phred33"));
 
         try {
             callSNPs(inputBAM, reference, vcf, intervals, ops, threads);

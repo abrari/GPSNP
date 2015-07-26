@@ -9,6 +9,8 @@ import snpsvm.bamreading.FeatureComputer;
  */
 public abstract class AlleleComputer implements FeatureComputer {
 
+    protected boolean isPhred33 = false;
+
     final double[] values = new double[2];
 
     static final int major = 0;
