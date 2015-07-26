@@ -105,6 +105,8 @@ public class VariantCandidateEmitter {
                 }
             }
 
+            System.out.println("[" + contig + ":" + start + "-" + end + "] yields " + variants.size() + " variants");
+
             return this.variants;
 
         } catch (EndOfContigException e) {

@@ -87,8 +87,6 @@ public class GPSNPCaller implements IntervalCaller<List<Variant>> {
                 }
             }
 
-            //CRITICAL: must return its bamWindow to the BAMWindowStore
-            bamWindows.returnToStore(window);
 
         } catch (IOException iox) {
             iox.printStackTrace();

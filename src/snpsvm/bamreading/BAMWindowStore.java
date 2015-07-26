@@ -11,7 +11,7 @@ import java.util.Stack;
  */
 public class BAMWindowStore {
 
-	final int MAX_WINDOWS = 8;
+	final int MAX_WINDOWS = 16;
 	private static int initialWindowCount = 2;
 	
 	private File bamSource = null;
