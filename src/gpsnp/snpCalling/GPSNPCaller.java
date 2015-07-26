@@ -68,14 +68,6 @@ public class GPSNPCaller implements IntervalCaller<List<Variant>> {
             VariantCandidateEmitter emitter = new VariantCandidateEmitter(referenceFile, counters, window, options);
             List<VariantCandidate> variantCandidates = new ArrayList<VariantCandidate>();
 
-            //Temporary files for debugging
-            String tmpDataPrefix = "." + generateRandomString(12);
-
-            File data = new File(tmpDataPrefix + ".tmp");
-
-            //Read BAM file, write results to temporary file
-            PrintStream dataStream = new PrintStream(new FileOutputStream(data));
-
             for(String contig : intervals.getContigs()) {
                 for(Interval interval : intervals.getIntervalsInContig(contig)) {
                     List<VariantCandidate> candidates = emitter.emitWindow(contig, interval.getFirstPos(), interval.getLastPos());
@@ -92,18 +84,11 @@ public class GPSNPCaller implements IntervalCaller<List<Variant>> {
                 Variant var = this.classifier.classify(v);
                 if (var != null) {
                     this.variants.add(var);
-                    dataStream.println(var.toString());
                 }
             }
 
             //CRITICAL: must return its bamWindow to the BAMWindowStore
             bamWindows.returnToStore(window);
-            dataStream.close();
-
-            //Remove temporary files
-            if (options.isRemoveTempFiles()) {
-                data.delete();
-            }
 
         } catch (IOException iox) {
             iox.printStackTrace();

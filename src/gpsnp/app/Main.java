@@ -128,21 +128,22 @@ public class Main {
         //Initialize BAMWindow store
         BAMWindowStore bamWindows = new BAMWindowStore(inputBAM, threads);
 
-        final long intervalExtent = intervals.getExtent();
-
-        System.out.println("Range " + intervals.toString());
-
         List<Variant> allVars;
 
         ThreadPoolExecutor threadPool = (ThreadPoolExecutor) Executors.newFixedThreadPool(threads);
 
         final IntervalSNPCaller caller = new IntervalSNPCaller(threadPool, ops, ref, null, bamWindows);
 
+        System.out.println("Calling SNPs over " + intervals.getExtent() + " bases with " + threads + " threads");
+        System.out.println("Range " + intervals.toString());
+
         //Submit multiple jobs to thread pool, returns immediately
         caller.submitAll(intervals);
 
         //Blocks until all variants are called
         allVars = caller.getResult();
+
+        System.out.println("Writing the result...");
 
         Collections.sort(allVars);
 
@@ -158,6 +159,8 @@ public class Main {
         }
 
         writer.close();
+
+        System.out.println("Done.");
     }
 
     public static void main(String[] argv) {
@@ -225,7 +228,6 @@ public class Main {
             ops.setMinVariantDepth((int)Math.floor(minVarDepthDub));
         }
 
-        ops.setRemoveTempFiles( ! args.hasOption("-preserve") );
         ops.setPhred33Qual( args.hasOption("-phred33"));
 
         try {
