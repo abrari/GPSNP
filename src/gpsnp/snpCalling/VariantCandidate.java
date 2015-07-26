@@ -23,6 +23,7 @@ public class VariantCandidate {
     private char refBase;
     private FastaWindow refReader;
     private AlignmentColumn alnCol;
+    private String alnBases;
     private Map<String, Double> featureValues; // key: feature name, value: feature values
 
     private DecimalFormat formatter = new DecimalFormat("0.0####");
@@ -33,6 +34,7 @@ public class VariantCandidate {
         this.refBase = refBase;
         this.refReader = refReader;
         this.alnCol = alnCol;
+        this.alnBases = alnCol.getBasesAsString(); // .getBases doesn't work (all column identical), don't know why
         this.featureValues = new HashMap<String, Double>();
     }
 
@@ -76,6 +78,18 @@ public class VariantCandidate {
             return val;
         else
             return 0.0;
+    }
+
+    public byte[] getAlnBases() {
+
+        int depth = this.alnBases.length();
+        byte[] bases = new byte[depth];
+
+        for (int i = 0; i < depth; i++) {
+            bases[i] = (byte)this.alnBases.charAt(i);
+        }
+
+        return bases;
     }
 
 }

@@ -11,6 +11,7 @@ import snpsvm.bamreading.variant.Variant;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -88,7 +89,7 @@ public class GPSNPCaller implements IntervalCaller<List<Variant>> {
 
             // Call true SNPs
             for (VariantCandidate v: variantCandidates) {
-                // dataStream.println(v.getContig() + ":" + v.getPosition() + "\t" + v.getRefBase() + "\t" + v.val("max.qual.minor"));
+                // dataStream.println(v.getContig() + ":" + v.getPosition() + "\t" + v.getRefBase() + "\t" + Arrays.toString(v.getAlnBases()));
                 Variant var = this.classifier.classify(v);
                 if (var != null) {
                     this.variants.add(var);

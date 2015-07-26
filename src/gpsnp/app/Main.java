@@ -151,7 +151,7 @@ public class Main {
 
         VCFVariantEmitter vcfWriter = new VCFVariantEmitter();
         try {
-            vcfWriter.writeHeader(writer, new FastaReader2(ref), inputBAM.getName().replace(".bam", ""));
+            vcfWriter.writeHeader(writer, new FastaReader2(ref), inputBAM.getName());
             vcfWriter.writeVariants(allVars, writer);
         } catch (FastaIndex.IndexNotFoundException e) {
             e.printStackTrace();
