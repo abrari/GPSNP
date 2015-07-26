@@ -1,12 +1,12 @@
 package gpsnp.app;
 
+import gpsnp.featureComputer.FeatureList;
 import snpsvm.app.ArgParser;
 import snpsvm.bamreading.FeatureComputer;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 

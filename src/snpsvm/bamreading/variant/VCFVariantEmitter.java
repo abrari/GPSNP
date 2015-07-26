@@ -18,7 +18,7 @@ import libsvm.LIBSVMModel;
  */
 public class VCFVariantEmitter {
 		
-	public void writeHeader(PrintStream out, FastaReader2 reference, String sampleName, LIBSVMModel model) {
+	public void writeHeader(PrintStream out, FastaReader2 reference, String sampleName) {
 		out.println("##fileformat=VCFv4.1");
 		out.println("##FORMAT=<ID=GT,Number=1,Type=String,Description=\"Genotype\">");
 		out.println("##FORMAT=<ID=AD,Number=.,Type=Integer,Description=\"Allelic depths for the ref and alt alleles in the order listed\">");
@@ -37,7 +37,6 @@ public class VCFVariantEmitter {
 		}
 		
 		out.println("##reference=file://" + reference.getFile().getAbsolutePath() );
-		out.println("##model=file://" + model.getModelPath() );
 		out.println("#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\t" + sampleName);
 		
 	}

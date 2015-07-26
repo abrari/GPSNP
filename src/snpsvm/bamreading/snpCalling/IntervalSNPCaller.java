@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadPoolExecutor;
 
+import gpsnp.snpCalling.GPSNPCaller;
 import snpsvm.bamreading.BAMWindowStore;
 import snpsvm.bamreading.CallingOptions;
 import snpsvm.bamreading.intervalProcessing.AbstractIntervalProcessor;
@@ -31,7 +32,7 @@ public class IntervalSNPCaller extends AbstractIntervalProcessor<List<Variant>> 
 								BAMWindowStore bamWindows) {
 		super(pool, ops);
 		this.reference = referenceFile;
-		this.model= modelFile;
+		this.model = modelFile;
 		this.bamWindows = bamWindows;
 	}
 
@@ -40,10 +41,8 @@ public class IntervalSNPCaller extends AbstractIntervalProcessor<List<Variant>> 
 	protected IntervalCaller<List<Variant>> getIntervalCaller(IntervalList intervals)
 			throws Exception {
 		
-		return new SNPCaller(reference,
-				model, 
+		return new GPSNPCaller(reference,
 				intervals,
-				CounterSource.getCounters(), 
 				bamWindows,
 				options);
 	}

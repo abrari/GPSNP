@@ -1,6 +1,6 @@
 package snpsvm.bamreading;
 
-import gpsnp.app.FeatureList;
+import gpsnp.featureComputer.FeatureList;
 
 import java.io.PrintStream;
 import java.text.DecimalFormat;
@@ -13,27 +13,32 @@ import java.util.List;
  */
 public class VariantCandidate {
 
+    private String contig;
     private int position;
     private char refBase;
     private FastaWindow refReader;
     private AlignmentColumn alnCol;
     private double[] featureValues;
-    private int flankLeft;
-    private int flankRight;
 
     private DecimalFormat formatter = new DecimalFormat("0.0####");
 
-    public VariantCandidate(int position, char refBase, FastaWindow refReader, AlignmentColumn alnCol) {
+    public VariantCandidate(String contig, int position, char refBase, FastaWindow refReader, AlignmentColumn alnCol) {
+        this.contig = contig;
         this.position = position;
         this.refBase = refBase;
         this.refReader = refReader;
         this.alnCol = alnCol;
-        flankLeft = flankRight = 0;
     }
 
-    public void computeFeatures() {
-        List<FeatureComputer> computers = FeatureList.getFeatures();
-        featureValues = new double[FeatureList.getFeatureCount()];
+    public void computeFeatures(List<FeatureComputer> computers) {
+        int featureCount = 0;
+        for(FeatureComputer feature : computers) {
+            for(int i=0; i<feature.getColumnCount(); i++) {
+                featureCount++;
+            }
+        }
+
+        featureValues = new double[featureCount];
 
         int c = 0;
         for(FeatureComputer computer: computers) {
@@ -49,35 +54,21 @@ public class VariantCandidate {
     }
 
     public void printMetaData(PrintStream out) {
-        out.print(alnCol.getCurrentPosition() + "\t" + refBase + "\t" + alnCol.getBasesAsString());
+        out.print(contig + "\t" + alnCol.getCurrentPosition() + "\t" + refBase);
     }
 
     public void printFeatureValues(PrintStream out) {
         for (double value : featureValues) {
             out.print("\t" + formatter.format(value));
         }
-        out.print("\t" + formatter.format(flankLeft));
-        out.print("\t" + formatter.format(flankRight));
     }
 
     public int getPosition() {
         return position;
     }
 
-    public void computeFlanks(int prevPos, int nextPos) {
-        flankLeft  = position - prevPos - 1;
-        flankRight = nextPos - position - 1;
-    }
-
     public char getRefBase() {
         return refBase;
     }
 
-    public FastaWindow getRefReader() {
-        return refReader;
-    }
-
-    public AlignmentColumn getAlnCol() {
-        return alnCol;
-    }
 }

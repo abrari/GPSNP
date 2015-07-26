@@ -1,14 +1,12 @@
 package gpsnp.app;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
+import gpsnp.featureComputer.FeatureList;
 import snpsvm.app.ArgParser;
 import snpsvm.bamreading.*;
 import snpsvm.bamreading.intervalProcessing.IntervalList;
-import snpsvm.counters.CounterSource;
 
 /**
  * other.Test computing features listed on FeatureList
@@ -72,8 +70,8 @@ public class FeatureComputation {
                                 if (computeFeatures == 0) {
                                     System.out.print(alnCol.getCurrentPosition());
                                 } else {
-                                    var = new VariantCandidate(alnCol.getCurrentPosition(), refBase, refReader, alnCol);
-                                    var.computeFeatures();
+                                    var = new VariantCandidate(contig, alnCol.getCurrentPosition(), refBase, refReader, alnCol);
+                                    var.computeFeatures(FeatureList.getFeatures());
                                     var.printMetaData(System.out);
                                     var.printFeatureValues(System.out);
                                 }

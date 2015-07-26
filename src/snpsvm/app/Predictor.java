@@ -245,7 +245,7 @@ public class Predictor extends AbstractModule {
 		
 		VCFVariantEmitter vcfWriter = new VCFVariantEmitter();
 		try {
-			vcfWriter.writeHeader(writer, new FastaReader2(ref), inputBAM.getName().replace(".bam", ""), new LIBSVMModel(model));
+			vcfWriter.writeHeader(writer, new FastaReader2(ref), inputBAM.getName().replace(".bam", ""));
 			vcfWriter.writeVariants(allVars, writer);
 		} catch (IndexNotFoundException e) {
 			e.printStackTrace();

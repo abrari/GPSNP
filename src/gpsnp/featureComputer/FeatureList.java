@@ -1,4 +1,4 @@
-package gpsnp.app;
+package gpsnp.featureComputer;
 
 import gpsnp.featureComputer.*;
 import snpsvm.bamreading.FeatureComputer;

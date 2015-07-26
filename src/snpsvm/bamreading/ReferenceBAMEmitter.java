@@ -55,7 +55,7 @@ public class ReferenceBAMEmitter {
 		positionWriter = writer;
 	}
 	
-	public void emitLine(PrintStream out) {
+	public void emitLine(String contig, PrintStream out) {
 		
 		if (alnCol.getApproxDepth() >= minDepth) {
             final char refBase = refReader.getBaseAt(alnCol.getCurrentPosition());
@@ -69,10 +69,9 @@ public class ReferenceBAMEmitter {
                return;
             }
 
-            out.print(alnCol.getCurrentPosition() + "\t" + refBase + "\t" + alnCol.getBasesAsString());
-
-            VariantCandidate var = new VariantCandidate(alnCol.getCurrentPosition(), refBase, refReader, alnCol);
-            var.computeFeatures();
+            VariantCandidate var = new VariantCandidate(contig, alnCol.getCurrentPosition(), refBase, refReader, alnCol);
+            var.computeFeatures(this.counters);
+            var.printMetaData(out);
             var.printFeatureValues(out);
 
 			out.println();
@@ -135,7 +134,7 @@ public class ReferenceBAMEmitter {
 
 			int curPos = start;
 			while(curPos < end && alnCol.hasMoreReadsInCurrentContig()) {
-				emitLine(out);
+				emitLine(contig, out);
 
 				if (refReader.indexOfLeftEdge()<(alnCol.getCurrentPosition()-refReader.windowSize/2)) {
 					try {

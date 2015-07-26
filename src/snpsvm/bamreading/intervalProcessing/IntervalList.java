@@ -240,21 +240,22 @@ public class IntervalList {
 		}
 		
 		StringBuilder strB = new StringBuilder();
-		strB.append("extent: " + this.getExtent() + " count: " + this.getIntervalCount() + "  " );
+		strB.append("extent: " + this.getExtent() + " count: " + this.getIntervalCount() + " (" );
 		int count = 0;
 		boolean ellipses = false;
 		for(String contig : getContigs()) {
 			for(Interval interval : getIntervalsInContig(contig)) {
 				if (count < 3 || count>( this.getIntervalCount()-2))
-					strB.append( interval.toString() +", ");
+					strB.append( contig + ":" + interval.toString() + " ");
 				else if (!ellipses) {
-					strB.append("....");
+					strB.append("... ");
 					ellipses = true;
 				}
 				
 				count++;
 			}
 		}
+        strB.append("\b)");
 		return strB.toString();
 	}
 	
