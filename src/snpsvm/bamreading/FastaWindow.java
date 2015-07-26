@@ -12,7 +12,7 @@ import snpsvm.util.ArrayCircularQueue.FullQueueException;
 
 public class FastaWindow {
 
-	final int windowSize = 256;
+	public final int windowSize = 256;
 	private int leftEdge = -1;
 	private FastaReader2 reader;
 	final ArrayCircularQueue bases = new ArrayCircularQueue(windowSize);

@@ -1,10 +1,15 @@
-package snpsvm.bamreading;
+package gpsnp.snpCalling;
 
 import gpsnp.featureComputer.FeatureList;
+import snpsvm.bamreading.AlignmentColumn;
+import snpsvm.bamreading.FastaWindow;
+import snpsvm.bamreading.FeatureComputer;
 
 import java.io.PrintStream;
 import java.text.DecimalFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A class to store variant candidate (variant site) found during reading alignment column
@@ -18,7 +23,7 @@ public class VariantCandidate {
     private char refBase;
     private FastaWindow refReader;
     private AlignmentColumn alnCol;
-    private double[] featureValues;
+    private Map<String, Double> featureValues; // key: feature name, value: feature values
 
     private DecimalFormat formatter = new DecimalFormat("0.0####");
 
@@ -28,27 +33,17 @@ public class VariantCandidate {
         this.refBase = refBase;
         this.refReader = refReader;
         this.alnCol = alnCol;
+        this.featureValues = new HashMap<String, Double>();
     }
 
     public void computeFeatures(List<FeatureComputer> computers) {
-        int featureCount = 0;
-        for(FeatureComputer feature : computers) {
-            for(int i=0; i<feature.getColumnCount(); i++) {
-                featureCount++;
-            }
-        }
-
-        featureValues = new double[featureCount];
-
-        int c = 0;
         for(FeatureComputer computer: computers) {
             final double[] values = computer.computeValue(refBase, refReader, alnCol);
             for(int i=0; i<values.length; i++) {
                 if (Double.isInfinite(values[i]) || Double.isNaN(values[i])) {
                     throw new IllegalArgumentException("Non-regular value for counter: " + computer.getName(i) + " found value=" + values[i]);
                 }
-                featureValues[c] = values[i];
-                c++;
+                featureValues.put(computer.getName(i) , values[i]);
             }
         }
     }
@@ -58,9 +53,13 @@ public class VariantCandidate {
     }
 
     public void printFeatureValues(PrintStream out) {
-        for (double value : featureValues) {
+        for (Double value : featureValues.values()) {
             out.print("\t" + formatter.format(value));
         }
+    }
+
+    public String getContig() {
+        return contig;
     }
 
     public int getPosition() {
@@ -69,6 +68,14 @@ public class VariantCandidate {
 
     public char getRefBase() {
         return refBase;
+    }
+
+    public Double val(String featureName) {
+        Double val = this.featureValues.get(featureName);
+        if (val != null)
+            return val;
+        else
+            return 0.0;
     }
 
 }

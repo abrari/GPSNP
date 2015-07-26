@@ -1,5 +1,7 @@
 package gpsnp.snpCalling;
 
+import gpsnp.classifier.SeSpRuleClassifier;
+import gpsnp.classifier.VariantClassifier;
 import gpsnp.featureComputer.FeatureList;
 import snpsvm.bamreading.*;
 import snpsvm.bamreading.intervalProcessing.IntervalCaller;
@@ -8,6 +10,7 @@ import snpsvm.bamreading.intervalProcessing.IntervalList.Interval;
 import snpsvm.bamreading.variant.Variant;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,15 +18,17 @@ import java.util.List;
  */
 public class GPSNPCaller implements IntervalCaller<List<Variant>> {
 
-    protected static int instanceCount = 0;
-    protected int myNumber = instanceCount;
+    private static int instanceCount = 0;
+    private int myNumber = instanceCount;
 
-    protected final File referenceFile;
-    protected final IntervalList intervals;
-    protected List<FeatureComputer> counters;
-    protected List<Variant> variants = null;
-    protected BAMWindowStore bamWindows;
-    protected CallingOptions options = null;
+    private final File referenceFile;
+    private final IntervalList intervals;
+    private List<FeatureComputer> counters;
+    private List<Variant> variants = null;
+    private BAMWindowStore bamWindows;
+    private CallingOptions options = null;
+
+    private VariantClassifier classifier;
 
     private long basesComputed = 0;
 
@@ -36,6 +41,8 @@ public class GPSNPCaller implements IntervalCaller<List<Variant>> {
         this.counters = FeatureList.getFeatures();
         this.bamWindows = bamWindows;
         this.options = options;
+        this.classifier = new SeSpRuleClassifier();
+        this.variants = new ArrayList<Variant>();
         instanceCount++;
     }
 
@@ -58,9 +65,10 @@ public class GPSNPCaller implements IntervalCaller<List<Variant>> {
     public void run() {
         try {
             BamWindow window = bamWindows.getWindow();
-            ReferenceBAMEmitter emitter = new ReferenceBAMEmitter(referenceFile, counters, window, options);
+            VariantCandidateEmitter emitter = new VariantCandidateEmitter(referenceFile, counters, window, options);
+            List<VariantCandidate> variantCandidates = new ArrayList<VariantCandidate>();
 
-            //Store intermediate results in temporary files
+            //Temporary files for debugging
             String tmpDataPrefix = "." + generateRandomString(12);
 
             File data = new File(tmpDataPrefix + ".tmp");
@@ -70,10 +78,27 @@ public class GPSNPCaller implements IntervalCaller<List<Variant>> {
 
             for(String contig : intervals.getContigs()) {
                 for(Interval interval : intervals.getIntervalsInContig(contig)) {
-                    emitter.emitWindow(contig, interval.getFirstPos(), interval.getLastPos(), dataStream);
+                    List<VariantCandidate> candidates = emitter.emitWindow(contig, interval.getFirstPos(), interval.getLastPos());
+                    if (candidates.size() > 0) {
+                        variantCandidates.addAll(candidates);
+                    }
                     basesComputed += interval.getSize();
                 }
             }
+
+            // Call true SNPs
+            for (VariantCandidate v: variantCandidates) {
+                // dataStream.println(v.getContig() + ":" + v.getPosition() + "\t" + v.getRefBase() + "\t" + v.val("max.qual.minor"));
+                Variant var = this.classifier.classify(v);
+                if (var != null) {
+                    this.variants.add(var);
+                    dataStream.println(var.toString());
+                }
+            }
+
+            //CRITICAL: must return its bamWindow to the BAMWindowStore
+            bamWindows.returnToStore(window);
+            dataStream.close();
 
             //Remove temporary files
             if (options.isRemoveTempFiles()) {

@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.List;
 
 import gpsnp.featureComputer.FeatureList;
+import gpsnp.snpCalling.VariantCandidate;
 import snpsvm.app.ArgParser;
 import snpsvm.bamreading.*;
 import snpsvm.bamreading.intervalProcessing.IntervalList;
