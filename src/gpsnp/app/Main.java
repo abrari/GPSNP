@@ -166,6 +166,11 @@ public class Main {
 
     public static void main(String[] argv) {
 
+        if (argv.length == 0) {
+            printHelp();
+            return;
+        }
+
         ArgParser args = new ArgParser(argv);
 
         String referencePath;
@@ -181,6 +186,16 @@ public class Main {
             classifierClass = getRequiredStringArg(args, "-C", "Missing required argument for classifier class, use -C");
         } catch (Exception e1) {
             System.err.println(e1.getMessage());
+            System.out.println("---");
+            printHelp();
+            return;
+        }
+
+        // Check classifier class exists
+        try {
+            Class.forName("gpsnp.classifier." + classifierClass);
+        } catch (ClassNotFoundException e) {
+            System.err.println("Invalid classifier class: " + classifierClass + "\nUse either SeSpRuleClassifier or PrRcRuleClassifier");
             return;
         }
 
@@ -245,6 +260,21 @@ public class Main {
             e.printStackTrace();
             System.err.println("Could not find the index file for the reference, please create one using samtools or picard");
         }
+    }
+
+    public static void printHelp() {
+        System.out.println("SNP calling program version 0.1");
+        System.out.println("Required arguments:");
+        System.out.println("    -R        reference file path (.fasta)");
+        System.out.println("    -B        input BAM file (.bam)");
+        System.out.println("    -V        output variant file (.vcf)");
+        System.out.println("    -C        classifier class (SeSpRuleClassifier or PrRcRuleClassifier)");
+        System.out.println("Optional arguments:");
+        System.out.println("    -t [4]    number of threads to run");
+        System.out.println("    -q [1.0]  minimum Phred-scaled quality to report variant");
+        System.out.println("    -d [2]    minimum total depth to examine for variant");
+        System.out.println("    -v [2]    minimum reads with variant allele required for variant calling");
+        System.out.println("    -phred33  the input BAM is in Phred+33 scoring");
     }
 
 }
