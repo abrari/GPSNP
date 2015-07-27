@@ -143,6 +143,7 @@ public class Main {
         //Blocks until all variants are called
         allVars = caller.getResult();
 
+        System.out.println(allVars.size() + " variants called.");
         System.out.println("Writing the result...");
 
         Collections.sort(allVars);
@@ -170,12 +171,14 @@ public class Main {
         String referencePath;
         String inputBAMPath;
         String vcfPath;
+        String classifierClass;
         Integer threads = 4;
 
         try {
             referencePath = getRequiredStringArg(args, "-R", "Missing required argument for reference file, use -R");
             inputBAMPath = getRequiredStringArg(args, "-B", "Missing required argument for input BAM file, use -B");
             vcfPath = getRequiredStringArg(args, "-V", "Missing required argument for destination vcf file, use -V");
+            classifierClass = getRequiredStringArg(args, "-C", "Missing required argument for classifier class, use -C");
         } catch (Exception e1) {
             System.err.println(e1.getMessage());
             return;
@@ -229,6 +232,7 @@ public class Main {
         }
 
         ops.setPhred33Qual( args.hasOption("-phred33"));
+        ops.setClassifierClass(classifierClass);
 
         try {
             callSNPs(inputBAM, reference, vcf, intervals, ops, threads);

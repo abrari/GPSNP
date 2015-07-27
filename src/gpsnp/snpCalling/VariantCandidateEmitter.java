@@ -105,7 +105,7 @@ public class VariantCandidateEmitter {
                 }
             }
 
-            System.out.println("[" + contig + ":" + start + "-" + end + "] yields " + variants.size() + " variants");
+            System.out.println("[" + contig + ":" + start + "-" + end + "] yields " + variants.size() + " variant candidates");
 
             return this.variants;
 

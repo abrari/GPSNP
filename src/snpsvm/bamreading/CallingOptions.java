@@ -17,7 +17,9 @@ public class CallingOptions {
 	
 	boolean removeTempFiles = true;
     boolean phred33Qual = false;    // is the input quality in phred+33 scoring?
-	
+
+    String classifierClass;
+
 	public CallingOptions() {
 		
 	}
@@ -34,13 +36,9 @@ public class CallingOptions {
 		return removeTempFiles;
 	}
 
-
-
 	public void setRemoveTempFiles(boolean removeTempFiles) {
 		this.removeTempFiles = removeTempFiles;
 	}
-
-
 
 	public int getMinTotalDepth() {
 		return minTotalDepth;
@@ -65,6 +63,12 @@ public class CallingOptions {
 	public void setMinQuality(double minQuality) {
 		this.minQuality = minQuality;
 	}
-	
-	
+
+    public String getClassifierClass() {
+        return classifierClass;
+    }
+
+    public void setClassifierClass(String classifierClass) {
+        this.classifierClass = classifierClass;
+    }
 }

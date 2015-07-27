@@ -1,5 +1,6 @@
 package gpsnp.snpCalling;
 
+import gpsnp.classifier.PrRcRuleClassifier;
 import gpsnp.classifier.SeSpRuleClassifier;
 import gpsnp.classifier.VariantClassifier;
 import gpsnp.featureComputer.FeatureList;
@@ -41,7 +42,7 @@ public class GPSNPCaller implements IntervalCaller<List<Variant>> {
         this.counters = FeatureList.getFeatures(options.isPhred33Qual());
         this.bamWindows = bamWindows;
         this.options = options;
-        this.classifier = new SeSpRuleClassifier();
+        this.classifier = loadClassifier(options.getClassifierClass());
         this.variants = new ArrayList<Variant>();
         instanceCount++;
     }
@@ -98,15 +99,24 @@ public class GPSNPCaller implements IntervalCaller<List<Variant>> {
         }
     }
 
-    private static String generateRandomString(int length) {
-        StringBuilder strB = new StringBuilder();
-        while(strB.length() < length) {
-            char c = chars.charAt( (int)(chars.length()*Math.random()) );
-            strB.append(c);
-        }
-        return strB.toString();
-    }
+    private VariantClassifier loadClassifier(String className) {
 
-    private static final String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabscdefhgijklmnopqrstuvwxyz1234567890";
+        String prefix = "gpsnp.classifier.";
+
+        try {
+            Object classifier = Class.forName(prefix + className).newInstance();
+            return (VariantClassifier)classifier;
+
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return new PrRcRuleClassifier();
+
+    }
 
 }

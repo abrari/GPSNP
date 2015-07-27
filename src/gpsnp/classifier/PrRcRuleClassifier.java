@@ -5,18 +5,14 @@ import gpsnp.snpCalling.VariantConverter;
 import snpsvm.bamreading.variant.Variant;
 
 /**
- * Classification rule that maximizes sensitivity and specificity.
- * Rule was generated using Genetic Programming.
- *
- * Created by abrari on 26/07/15.
+ * Created by abrari on 27/07/15.
  */
-
-public class SeSpRuleClassifier implements VariantClassifier {
+public class PrRcRuleClassifier implements VariantClassifier {
 
     private boolean isTrueSNP(VariantCandidate v) {
-        if (v.val("max.qual.minor") >= 58.341 && v.val("max.qual.major") >= 46.184 && v.val("total.depth") < 47.256) {
+        if (v.val("max.qual.minor") > 59.699 && v.val("total.depth") <= 82.149 && v.val("allele.balance") >= 0.067) {
             return true;
-        } else if(v.val("max.qual.minor") <= 58.933 || v.val("max.qual.major") < 48.921 || v.val("total.depth") >= 63.330) {
+        } else if(v.val("max.qual.minor") <= 60.101 || v.val("total.depth") > 60.973 || (v.val("allele.balance") > 0.048 && v.val("allele.balance") < 0.930)) {
             return false;
         } else {
             return false;
@@ -33,25 +29,3 @@ public class SeSpRuleClassifier implements VariantClassifier {
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
