@@ -48,7 +48,7 @@ public class MaxQualAlleleComputer extends AlleleComputer {
 
         if (col.getDepth() > 0) {
 
-            calculateAlleles(col.getBases(), col.getDepth());
+            calculateAlleles(col.getBases(), col.getDepth(), refBase);
             Iterator<MappedRead> it = col.getIterator();
 
             while(it.hasNext()) {

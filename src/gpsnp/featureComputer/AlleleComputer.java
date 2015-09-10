@@ -37,55 +37,59 @@ public abstract class AlleleComputer implements FeatureComputer {
      *
      * @param bases
      */
-    protected void calculateAlleles(byte[] bases, int depth) {
+    protected void calculateAlleles(byte[] bases, int depth, char refBase) {
 
-        majorAllele = minorAllele = 'X';
+        // new concept: major allele = ref base, minor allele = alt base
 
-        char[] baseSymbol = {'A','C','G','T'};
-        int majorIndex, minorIndex, majorVal, minorVal;
+        int[] baseCount = new int[4];
+        baseCount[0] = 0; // A
+        baseCount[1] = 0; // C
+        baseCount[2] = 0; // G
+        baseCount[3] = 0; // T
 
-        int[] count = new int[4];
-        count[0] = 0; // A
-        count[1] = 0; // C
-        count[2] = 0; // G
-        count[3] = 0; // T
-
-        for (int i=0; i<depth; i++) {   // limit to depth, because AlignmentColumn.bases is overwritten in every run
+        for (int i=0; i < depth; i++) {
             byte base = bases[i];
-            if ((char)base == 'A') count[0]++;
-            if ((char)base == 'C') count[1]++;
-            if ((char)base == 'G') count[2]++;
-            if ((char)base == 'T') count[3]++;
+            if ((char)base == 'A') baseCount[0]++;
+            if ((char)base == 'C') baseCount[1]++;
+            if ((char)base == 'G') baseCount[2]++;
+            if ((char)base == 'T') baseCount[3]++;
         }
 
-        if (count[0] > count[1]) {
-            minorVal = count[1];
-            minorIndex = 1;
-            majorVal = count[0];
-            majorIndex = 0;
-        } else {
-            minorVal = count[0];
-            minorIndex = 0;
-            majorVal = count[1];
-            majorIndex = 1;
+        majorAllele = refBase;
+        minorAllele = computeAlt(refBase, baseCount);
+
+    }
+
+    private static char computeAlt(char ref, int[] counts) {
+        int A = counts[0];
+        int C = counts[1];
+        int G = counts[2];
+        int T = counts[3];
+
+        if (ref == 'A')
+            A = 0;
+        if (ref == 'C')
+            C = 0;
+        if (ref == 'G')
+            G = 0;
+        if (ref == 'T')
+            T = 0;
+
+        //Find max of all...
+        if (A >= C && A>=G && A>=T) {
+            return 'A';
+        }
+        if (C >= A && C>=G && C>=T) {
+            return 'C';
+        }
+        if (G >= A && G>=C && G>=T) {
+            return 'G';
+        }
+        if (T >= A && T>=C && T>=G) {
+            return 'T';
         }
 
-        for(int i = 2; i < count.length; i++){
-            if(count[i] >= majorVal){
-                minorVal=majorVal;
-                minorIndex=majorIndex;
-                majorVal=count[i];
-                majorIndex=i;
-            }
-            else if(count[i] > minorVal){
-                minorVal=count[i];
-                minorIndex=i;
-            }
-        }
-
-        majorAllele = baseSymbol[majorIndex];
-        minorAllele = baseSymbol[minorIndex];
-
+        return 'N';
     }
 
 }
